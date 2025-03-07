@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ProjectPrn222.Models.DTO.ProductViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>Organic Information</p>
+                        <h1>News Fruits</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-section mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="#"><img src="@item.Image" alt=""></a>
+                            </div>
+                            <h3>@item.ProductName</h3>
+                            <p class="product-price"><span>Per Kg</span> @item.Price </p>
+                            <a href="#" class="cart-btn"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+
+@{
+    var paggingModel = new ProjectPrn222.Helpers.PaggingModel()
+            {
+                CurrentPage = ViewBag.CurrentPage,
+                CountPage = ViewBag.CountPage,
+                GenerateUrl = (int? page) => Url.Action("ListProduct", new { currentPage = page })
+            };
+}
+
+<partial name="_Pagging" model="@paggingModel" />
+

@@ -1,0 +1,44 @@
+﻿@model ProjectPrn222.Models.DTO.UserViewModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
+<head>
+    <link href="~/css/signin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="form-signin">
+        <form asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+            <h1 class="h3 mb-3 fw-normal">Đăng ký tài khoản mới</h1>
+
+            <div class="form-floating mb-2">
+                <input asp-for="UserName" class="form-control"/>
+                <label asp-for="UserName">Tên đăng nhập</label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="Email" type="email" class="form-control"/>
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                <label asp-for="Password">Mật khẩu</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
+                <label asp-for="ConfirmPassword">Xác nhận mật khẩu</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Đăng ký</button>
+            <a asp-controller="Auth" asp-action="Login" class="w-100 btn btn-lg btn-secondary mt-2">Back to Login</a>
+        </form>
+    </div>
+
+    <partial name="_ValidationScriptsPartial" />
+</body>

@@ -1,0 +1,34 @@
+﻿@model ProjectPrn222.Models.DTO.UserViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+<head>
+    <link href="~/css/signin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="form-signin">
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+            <div class="form-floating mb-2">
+                <input asp-for="UserName" class="form-control"/>
+                <label asp-for="UserName">Tên đăng nhập</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="Password" type="password" class="form-control"/>
+                <label asp-for="Password">Mật khẩu</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+            <a asp-controller="Auth" asp-action="Register" class="w-100 btn btn-lg btn-secondary mt-2">Sign up</a>
+        </form>
+    </div>
+
+    <partial name="_ValidationScriptsPartial" />
+</body>
+
