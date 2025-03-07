@@ -465,11 +465,7 @@ a.boxed-btn, a.bordered-btn, a.cart-btn {
 
 .section-title {
   margin-bottom: 80px;
-}
-
-.breadcrumb-bg {
-  background-image: url(../img/breadcrumb-bg.jpg);
-}
+}.breadcrumb-bg {    background-image: url('https://www.thietkewebchuanseo.com/images/cach-dang-bai-ban-hoa-qua-4958.jpg');}
 
 .breadcrumb-text p {
   color: #F28123;

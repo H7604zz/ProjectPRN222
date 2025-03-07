@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjectPrn222.Models;
 using ProjectPrn222.Service.Iterface;
 using System.Diagnostics;
@@ -21,12 +22,20 @@ namespace ProjectPrn222.Controllers
             return View(hotProduct);
         }
 
-        public IActionResult ListProduct(string? keyword, int currentPage = 1)
+        public IActionResult ListProduct(string? keyword, int? categoryId, int currentPage = 1)
         {
+            //list category
+            ViewBag.Category = new SelectList(_productService.GetAllCategories().ToList(), "CategoryId", "CategoryName", categoryId);
             // Bắt đầu từ truy vấn tìm kiếm nếu có keyword, ngược lại lấy tất cả sản phẩm
             var productListQuery = !string.IsNullOrEmpty(keyword)
                 ? _productService.SearchProduct(keyword)
                 : _productService.GetAllProducts();
+
+            //lọc theo category
+            if (categoryId.HasValue)
+            {
+                productListQuery = productListQuery.Where(p => p.CategoryId == categoryId.Value);    
+            }
 
             int totalProduct = productListQuery.Count(); // Tổng số sản phẩm sau khi lọc
             int totalPage = (int)Math.Ceiling((double)totalProduct / ITEM_PER_PAGE); // Tổng số trang
@@ -35,7 +44,7 @@ namespace ProjectPrn222.Controllers
             currentPage = Math.Max(1, Math.Min(currentPage, totalPage));
 
             // Truyền dữ liệu cho ViewBag
-            ViewBag.Keyword = keyword;
+            ViewBag.keyword = keyword;
             ViewBag.CurrentPage = currentPage;
             ViewBag.CountPage = totalPage;
 

@@ -94,5 +94,10 @@ namespace ProjectPrn222.Service.Implement
 
             return product;
         }
+
+        public IQueryable<Category> GetAllCategories()
+        {
+            return _context.Categories; 
+        }
     }
 }

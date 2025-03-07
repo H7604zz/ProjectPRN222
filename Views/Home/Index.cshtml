@@ -96,7 +96,9 @@
 								<a href="#"><img src="@item.Image" alt=""></a>
 							</div>
 							<h3>@item.ProductName</h3>
-							<p class="product-price"><span>Per Kg</span> @item.Price </p>
+							<p class="product-price">
+								<span>Per Kg</span> @($"{item.Price:N0} VNĐ")
+							</p>
 							<a href="cart.html" class="cart-btn"><i class="bi bi-cart-plus"></i> Add to Cart</a>
 						</div>
 					</div>

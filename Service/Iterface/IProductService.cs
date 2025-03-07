@@ -12,5 +12,6 @@ namespace ProjectPrn222.Service.Iterface
         IQueryable<ProductViewModel> GetAllProducts();
         ProductViewModel? GetProductById(int id);
         IQueryable<ProductViewModel>? SearchProduct(string keyword);
+        IQueryable<Category> GetAllCategories();
     }
 }
