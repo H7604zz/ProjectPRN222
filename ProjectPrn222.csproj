@@ -28,10 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="Views\Home\Details.cshtml">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
 	  <Content Update="Views\Home\ListProduct.cshtml">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

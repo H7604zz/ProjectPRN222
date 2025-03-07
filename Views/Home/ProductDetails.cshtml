@@ -1,0 +1,95 @@
+﻿@model ProjectPrn222.Models.DTO.ProductViewModel
+
+@{
+	ViewData["Title"] = "Chi tiết sản phẩm";
+}
+
+<body>
+	<!--PreLoader-->
+	<div class="loader">
+		<div class="loader-inner">
+			<div class="circle"></div>
+		</div>
+	</div>
+	<!--PreLoader Ends-->
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>See more Details</p>
+						<h1>Single Product</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+	<!-- single product -->
+	<div class="single-product mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="single-product-img">
+						<img src="@Model.Image" alt="">
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="single-product-content">
+						<h3>@Model.ProductName</h3>
+						<p class="single-product-pricing">Giá (theo cân): @($"{Model.Price:N0} VNĐ")</p>
+						<p>@Model.Description</p>
+						<div class="single-product-form">
+							<form action="#">
+								<input type="number" placeholder="0">
+							</form>
+							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<p><strong>Categories: </strong>@Model.CategoryName</p>
+						</div>
+						<h4>Share:</h4>
+						<ul class="product-share">
+							<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+							<li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end single product -->
+	<!-- more products -->
+	<!-- more products -->
+	<div class="more-products mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">
+						<h3><span class="orange-text">Hoa quả </span>tương tự</h3>
+						<p>Mang đến cho bạn những trái cây tươi ngon nhất, được nhập trực tiếp từ vườn đến tay người tiêu dùng.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				@foreach (var product in Model.SimilarProducts)
+				{
+					<div class="col-lg-4 col-md-6 text-center">
+						<div class="single-product-item">
+							<div class="product-image">
+								<a asp-action="ProductDetails" asp-route-productid="@Model.ProductId"><img src="@Model.Image" alt=""></a>
+							</div>
+							<h3>@product.ProductName</h3>
+							<p class="product-price">@($"{product.Price:N0} VNĐ")</p>
+							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+	<!-- end more products -->
+	<!-- end more products -->
+
+</body>

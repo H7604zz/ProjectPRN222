@@ -11,5 +11,8 @@
         public string CategoryName { get; set; }
         public decimal Price { get; set; }
         public DateTime PriceUpdateDate { get; set; }
-    }
+
+        //các sản phẩm tương tự
+		public IEnumerable<ProductViewModel> SimilarProducts { get; set; }
+	}
 }

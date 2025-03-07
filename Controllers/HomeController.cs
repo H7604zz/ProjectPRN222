@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using ProjectPrn222.Models;
 using ProjectPrn222.Service.Iterface;
 using System.Diagnostics;
@@ -57,12 +58,22 @@ namespace ProjectPrn222.Controllers
             return View(pagedProduct);
         }
 
-
-
-        public IActionResult Details(int productId)
+        public IActionResult ProductDetails(int productid)
         {
-            var productDetails = _productService.GetProductById(productId);
-            return View(productDetails);
+            ViewBag.Productid = productid;
+			var productDetails = _productService.GetProductById(productid);
+           
+            //không có sản phẩm
+            if(productDetails == null) return NotFound();
+
+            var similarProducts = _productService.GetAllProducts()
+                .Where(p => p.CategoryId == productDetails.CategoryId && p.ProductId != productid)
+                .Take(6).ToList();
+
+            //sản phẩm liên quan
+			productDetails.SimilarProducts = similarProducts;
+
+			return View(productDetails);
         }
 
         public IActionResult Privacy()
