@@ -30,6 +30,21 @@ namespace ProjectPrn222.Controllers
             var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
             if (result.Succeeded)
             {
+                var user = await _userManager.FindByNameAsync(username);
+                if (user != null)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    //chuyển đến trang Admin
+                    if (roles.Contains("Admin"))
+                    {
+                        return RedirectToAction("ManageUser", "Admin");
+                    }
+                    //chuyển đến trang Staff
+                    //if (roles.Contains("Staff"))
+                    //{
+                    //    return RedirectToAction("", "Staff");
+                    //}
+                }
                 return RedirectToAction("Index", "Home"); 
             }
             TempData["Error"] = "Tài khoản và mật khẩu không chính xác";

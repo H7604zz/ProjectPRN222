@@ -1,0 +1,14 @@
+﻿.sidebar {
+    width: 250px; /* Điều chỉnh chiều rộng của sidebar */
+    height: 100vh; /* Chiều cao full màn hình */
+    position: fixed; /* Cố định sidebar */
+    top: 0;
+    left: 0;
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+    background-color: #f8f9fa; /* Màu nền của sidebar */
+}
+
+.main-content {
+    margin-left: 250px; /* Đảm bảo nội dung không bị che bởi sidebar */
+    padding: 20px; /* Thêm padding cho nội dung */
+}

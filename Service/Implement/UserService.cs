@@ -1,4 +1,7 @@
-﻿using ProjectPrn222.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using ProjectPrn222.Models;
+using ProjectPrn222.Models.DTO;
 using ProjectPrn222.Service.Iterface;
 
 namespace ProjectPrn222.Service.Implement
@@ -10,9 +13,20 @@ namespace ProjectPrn222.Service.Implement
         {
             _context = context;
         }
-        public IList<ApplicationUser> GetAllUsers()
+        public IQueryable<UserViewModel> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return from u in _context.Users
+                   join ur in _context.UserRoles on u.Id equals ur.UserId
+                   join r in _context.Roles on ur.RoleId equals r.Id
+                  select new UserViewModel
+                  {
+                      UserId = u.Id,
+                      UserName = u.UserName,
+                      Password = u.PasswordHash,
+                      ConfirmPassword = u.PasswordHash,
+                      Email = u.Email,
+                      RoleName = r.Name
+                  };
         }
         public void AddUser(ApplicationUser user)
         {
