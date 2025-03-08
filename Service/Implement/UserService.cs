@@ -28,6 +28,7 @@ namespace ProjectPrn222.Service.Implement
                       RoleName = r.Name
                   };
         }
+
         public void AddUser(ApplicationUser user)
         {
             _context.Users.Add(user);
@@ -52,5 +53,21 @@ namespace ProjectPrn222.Service.Implement
             return _context.Users.Any(u => u.Email == email);
         }
 
+        public IQueryable<UserViewModel>? SearchUser(string keyword)
+        {
+            return from u in _context.Users
+                   join ur in _context.UserRoles on u.Id equals ur.UserId
+                   join r in _context.Roles on ur.RoleId equals r.Id
+                   where u.Email.Contains(keyword) || u.UserName.Contains(keyword)
+                   select new UserViewModel
+                   {
+                       UserId = u.Id,
+                       UserName = u.UserName,
+                       Password = u.PasswordHash,
+                       ConfirmPassword = u.PasswordHash,
+                       Email = u.Email,
+                       RoleName = r.Name
+                   };
+        }
     }
 }
