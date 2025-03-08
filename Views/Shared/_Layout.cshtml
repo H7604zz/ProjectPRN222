@@ -81,56 +81,70 @@
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            <partial name="_Notification" />
-            @RenderBody()
-        </main>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            @if (User.IsInRole("Staff") || User.IsInRole("Admin"))
+            {
+                <div class="sidebar">
+                    <partial name="Sidebar" />
+                </div>
+            }
+
+            <!-- Nội dung chính -->
+            <main role="main" class="pb-3">
+                <partial name="_Notification" />
+                @RenderBody()
+            </main>
+        </div>
     </div>
+
     <!-- footer -->
-    <div class="footer-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box about-widget">
-                        <h2 class="widget-title">About us</h2>
-                        <p>Trái cây không chỉ là món quà ngọt ngào từ thiên nhiên mà còn là nguồn cung cấp vitamin, khoáng chất và chất chống oxy hóa dồi dào.</p>
+    <footer>
+        <div class="footer-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-box about-widget">
+                            <h2 class="widget-title">About us</h2>
+                            <p>Trái cây không chỉ là món quà ngọt ngào từ thiên nhiên mà còn là nguồn cung cấp vitamin, khoáng chất và chất chống oxy hóa dồi dào.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box get-in-touch">
-                        <h2 class="widget-title">Get in Touch</h2>
-                        <ul>
-                            <li>Thạch Thất, Hà Nội</li>
-                            <li>admin@examlple.com</li>
-                            <li>+84 012 456 789</li>
-                        </ul>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-box get-in-touch">
+                            <h2 class="widget-title">Get in Touch</h2>
+                            <ul>
+                                <li>Thạch Thất, Hà Nội</li>
+                                <li>admin@examlple.com</li>
+                                <li>+84 012 456 789</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box pages">
-                        <h2 class="widget-title">Pages</h2>
-                        <ul>
-                            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li><a asp-controller="Home" asp-action="About">About</a></li>
-                            <li><a href="#">Shop</a></li>
-                            <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-                        </ul>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-box pages">
+                            <h2 class="widget-title">Pages</h2>
+                            <ul>
+                                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li><a asp-controller="Home" asp-action="About">About</a></li>
+                                <li><a href="#">Shop</a></li>
+                                <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box subscribe">
-                        <h2 class="widget-title">Subscribe</h2>
-                        <p>Đăng ký danh sách gửi thư của chúng tôi để nhận thông tin cập nhật mới nhất.</p>
-                        <form action="index.html">
-                            <input type="email" placeholder="Email">
-                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                        </form>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-box subscribe">
+                            <h2 class="widget-title">Subscribe</h2>
+                            <p>Đăng ký danh sách gửi thư của chúng tôi để nhận thông tin cập nhật mới nhất.</p>
+                            <form action="index.html">
+                                <input type="email" placeholder="Email">
+                                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
     <!-- end footer -->
     <!-- jquery -->
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>

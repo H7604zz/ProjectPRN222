@@ -1342,38 +1342,12 @@ a.mobile-show.search-bar-icon:hover {
 
 # Hero Styles
 
------------------------------------------------------------------------------ */.hero-bg {    background-image: url('https://image.tienphong.vn/600x315/Uploaded/2023/rwbvhvobvvimsb/2021_09_06/6-nhom-trai-cay-de-an-buoi-sang-5711.jpg');    background-size: cover;    background-position: center;    background-attachment: fixed;}
-
-.hero-text {
-  display: table;
-  height: 100%;
-}
-
-.hero-text-tablecell {
-  display: table-cell;
-}
-
-.hero-area {
-  height: 100%;
-  position: relative;
-  z-index: 1;
-}
+----------------------------------------------------------------------------- */
 
 html, body {
   height: 100%;
 }
 
-.hero-area:after {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  content: "";
-  background-color: #07212e;
-  z-index: -1;
-  opacity: 0.6;
-}
 
 .hero-text p.subtitle {
   color: #F28123;
@@ -1390,46 +1364,12 @@ html, body {
   color: #fff;
 }
 
-.hero-area div {
-  height: 100%;
-}
-
-.hero-area div.hero-text {
-  height: 100%;
-  width: 100%;
-}
-
-.hero-area div.hero-text-tablecell {
-  height: auto;
-  vertical-align: middle;
-}
-
-.hero-area div.hero-text-tablecell div {
-  height: auto;
-  vertical-align: middle;
-}
-
 .hero-btns {
   margin-top: 35px;
 }
 
 .hero-btns a.bordered-btn {
   margin-left: 15px;
-}
-
-.hero-area div.hero-form {
-  background-color: #fff;
-  text-align: center;
-  width: 380px;
-  margin: 0 auto;
-  margin-right: 0;
-  border-radius: 5px;
-  -webkit-box-shadow: 0 0 15px #2d2d2d;
-  box-shadow: 0 0 15px #2d2d2d;
-  position: absolute;
-  right: 30px;
-  bottom: -15%;
-  height: 600px;
 }
 
 input[type="submit"] {
@@ -1444,17 +1384,6 @@ input[type="submit"] {
   border-radius: 3px;
 }
 
-.homepage-bg-1 {
-  background-image: url(../img/hero-bg.jpg);
-}
-
-.homepage-bg-2 {
-  background-image: url(../img/hero-bg-2.jpg);
-}
-
-.homepage-bg-3 {
-  background-image: url(../img/hero-bg-3.jpg);
-}
 
 .homepage-slider {
   height: 100%;
@@ -1469,15 +1398,8 @@ input[type="submit"] {
   width: 100%;
 }
 
-.homepage-slider div.hero-text-tablecell {
-  height: auto;
-  vertical-align: middle;
-  display: table-cell;
-}
 
-.homepage-slider div.hero-text-tablecell div {
-  height: auto;
-}
+
 
 .single-homepage-slider {
   background-size: cover;
@@ -2718,4 +2640,4 @@ table.order-details tbody td {
   display: table-cell;
   vertical-align: middle;
   width: 100%;
-}.view-more-btn {    display: inline-block;    padding: 10px 20px;    background-color: #f28123; /* Màu cam, bạn có thể thay đổi */    color: #fff; /* Chữ trắng */    text-decoration: none; /* Bỏ gạch chân */    border-radius: 5px; /* Bo góc */    font-size: 16px;    font-weight: bold;    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */}.view-more-btn:hover {    background-color: #d96b1c; /* Màu khi hover */    text-decoration: none;    color: #fff;}.text-center {    text-align: center; /* Căn giữa nội dung */}
+}.text-center {    text-align: center; /* Căn giữa nội dung */}
