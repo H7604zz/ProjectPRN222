@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 //DI
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 //session
 builder.Services.AddSession(options =>

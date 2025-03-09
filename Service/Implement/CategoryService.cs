@@ -1,0 +1,44 @@
+﻿using ProjectPrn222.Models;
+using ProjectPrn222.Service.Iterface;
+
+namespace ProjectPrn222.Service.Implement
+{
+    public class CategoryService : ICategoryService
+    {
+        private readonly AppDbContext _context;
+        public CategoryService(AppDbContext context)
+        {
+            _context = context;
+        }
+        public void AddCategory(Category category)
+        {
+            _context.Categories.Add(category);
+            _context.SaveChanges();
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            _context.Categories.Remove(category);
+            _context.SaveChanges();
+        }
+        public void UpdateCategory(Category category)
+        {
+            _context.Categories.Update(category);
+            _context.SaveChanges();
+        }
+        public Category? GetCategory(int id)
+        {
+            return _context.Categories.FirstOrDefault(x => x.CategoryId == id);
+        }
+
+        public bool HasCategory(string categoryName)
+        {
+            return _context.Categories.Any(x => x.CategoryName.Equals(categoryName, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        public IQueryable<Category> GetAllCategories()
+        {
+            return _context.Categories;
+        }
+    }
+}
