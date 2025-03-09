@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjectPrn222.Models;
+using ProjectPrn222.Service.Implement;
 using ProjectPrn222.Service.Iterface;
 
 namespace ProjectPrn222.Controllers
@@ -10,14 +11,17 @@ namespace ProjectPrn222.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IUserService _userService;
 
         public AuthController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
-                                 RoleManager<ApplicationRole> roleManager)
+                                 RoleManager<ApplicationRole> roleManager,
+                                 IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _userService = userService;
         }
         public IActionResult Login()
         {
@@ -64,21 +68,28 @@ namespace ProjectPrn222.Controllers
 
             if (result.Succeeded)
             {
-                var defaultRole = "Customer";
-
-                // Tạo role "Customer" nếu chưa tồn tại
-                if (!await _roleManager.RoleExistsAsync(defaultRole))
+                if (_userService.IsEmailExisted(email))
                 {
-                    await _roleManager.CreateAsync(new ApplicationRole { Name = defaultRole});
+                    TempData["Error"] = "Email đã được sử dụng. Vui lòng chọn email khác.";
+                    return View();
                 }
+                else
+                {
+                    var defaultRole = "Customer";
 
-                // Gán mặc định role "Customer" cho user mới
-                await _userManager.AddToRoleAsync(user, defaultRole);
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                //isPersistent: false có tác dụng Khi người dùng đóng trình duyệt, cookie sẽ bị xóa và lần sau mở lại sẽ phải đăng nhập lại.
+                    // Tạo role "Customer" nếu chưa tồn tại
+                    if (!await _roleManager.RoleExistsAsync(defaultRole))
+                    {
+                        await _roleManager.CreateAsync(new ApplicationRole { Name = defaultRole });
+                    }
 
-                TempData["Success"] = "Đăng ký tài khoản thành công";
-                return RedirectToAction("Index", "Home");
+                    // Gán mặc định role "Customer" cho user mới
+                    await _userManager.AddToRoleAsync(user, defaultRole);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //isPersistent: false có tác dụng Khi người dùng đóng trình duyệt, cookie sẽ bị xóa và lần sau mở lại sẽ phải đăng nhập lại.
+                    TempData["Success"] = "Đăng ký tài khoản thành công";
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             foreach (var error in result.Errors)
@@ -87,6 +98,8 @@ namespace ProjectPrn222.Controllers
                 Console.WriteLine(error.Description);
             }
 
+            ViewBag.password = password;
+            ViewBag.confirmpassword = password;
             return View();
         }
 

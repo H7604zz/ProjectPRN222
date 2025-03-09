@@ -16,7 +16,7 @@
                 <label asp-for="UserName">Tên đăng nhập</label>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-
+            
             <div class="form-floating mb-2">
                 <input asp-for="Email" type="email" class="form-control"/>
                 <label asp-for="Email">Email</label>
@@ -24,13 +24,13 @@
             </div>
 
             <div class="form-floating mb-2">
-                <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                <input asp-for="Password" type="password" class="form-control" value="@ViewBag.password" placeholder="Password" />
                 <label asp-for="Password">Mật khẩu</label>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-2">
-                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
+                <input asp-for="ConfirmPassword" type="password" class="form-control" value="@ViewBag.password" placeholder="Confirm Password" />
                 <label asp-for="ConfirmPassword">Xác nhận mật khẩu</label>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
