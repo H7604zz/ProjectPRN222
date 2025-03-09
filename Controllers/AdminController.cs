@@ -25,7 +25,7 @@ namespace ProjectPrn222.Controllers
             _roleManager = roleManager;
         }
 
-        public ActionResult ManageUser(string? keyword, string? role, int currentPage)
+        public IActionResult ManageUser(string? keyword, string? role, int currentPage)
         {
             ViewBag.Roles = _roleManager.Roles.Where(u => u.Name != "Admin").ToList();
 
