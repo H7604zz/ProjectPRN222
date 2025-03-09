@@ -18,7 +18,7 @@ namespace ProjectPrn222.Service.Implement
             return from u in _context.Users
                    join ur in _context.UserRoles on u.Id equals ur.UserId
                    join r in _context.Roles on ur.RoleId equals r.Id
-                  select new UserViewModel
+                   select new UserViewModel
                   {
                       UserId = u.Id,
                       UserName = u.UserName,

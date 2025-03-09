@@ -4,8 +4,7 @@ namespace ProjectPrn222.Models.DTO
 {
     public class UserViewModel
     {
-        [Required]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         [Required(ErrorMessage = "Tên người dùng là bắt buộc")]
         [Display(Name = "Tên người dùng")]
@@ -27,7 +26,7 @@ namespace ProjectPrn222.Models.DTO
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Chọn vai trò của user.")]
         public string RoleName { get; set; }
     }
 }
