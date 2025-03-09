@@ -173,6 +173,39 @@
             });
         });
 
+        function deleteUser(userId) {
+            if (confirm('Bạn có chắc muốn xóa người dùng này?')) {
+                // Hiển thị loader nếu có
+                $(".loader").fadeIn();
 
+                $.ajax({
+                    url: '/Admin/Delete',
+                    type: 'POST',
+                    data:
+                    { 
+                        id: userId
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Thông báo thành công
+                            //alert(response.message); -- đã thay thế bằng toastr
+                            // Reload trang để cập nhật danh sách
+                            location.reload();
+                        } else {
+                            // Thông báo lỗi nếu có
+                            //alert(response.message); -- đã thay thế bằng toastr
+                            // Ẩn loader
+                            $(".loader").fadeOut();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Xử lý lỗi
+                        //console.error(error); -- đã thay thế bằng toastr
+                        // Ẩn loader
+                        $(".loader").fadeOut();
+                    }
+                });
+            }
+        }
     </script>
 }

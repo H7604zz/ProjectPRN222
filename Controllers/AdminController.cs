@@ -174,6 +174,38 @@ namespace ProjectPrn222.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                TempData["Error"] = "ID không hợp lệ.";
+                return Json(new { success = false });
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                TempData["Error"] = "Không tìm thấy người dùng.";
+                return Json(new { success = false });
+            }
+
+            try
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = "Xóa người dùng thành công!";
+                    return Json(new { success = true });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Lỗi: {ex.Message}";
+                return Json(new { success = false });
+            }
+            return Json(new { success = false });
+        }
     }
 }
 
