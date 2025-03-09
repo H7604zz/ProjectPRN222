@@ -10,5 +10,6 @@ namespace ProjectPrn222.Service.Iterface
         bool HasCategory(string categoryName);
         Category? GetCategory(int id);
         IQueryable<Category> GetAllCategories();
+        IQueryable<Category> SearchCategories(string keyword);
     }
 }

@@ -40,5 +40,9 @@ namespace ProjectPrn222.Service.Implement
         {
             return _context.Categories;
         }
+        public IQueryable<Category> SearchCategories(string keyword)
+        {
+            return _context.Categories.Where(c=>c.CategoryName.Contains(keyword));
+        }
     }
 }

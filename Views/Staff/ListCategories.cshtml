@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Danh sách danh mục";
+}
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
+    <div class="row">
+        <!-- Main Content -->
+        <div class="container my-5">
+            <!-- Add Create Button -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="bi bi-plus"></i> Thêm danh mục
+                </button>
+            </div>
+
+            <form asp-action="ListCategories" method="get" class="row g-3 align-items-center justify-content-center">
+                <!-- Search Input -->
+                <div class="col-md-12">
+                    <div class="input-group shadow-sm">
+                        <input type="text" class="form-control" name="keyword"
+                               placeholder="Tìm kiếm tên danh mục" value="@ViewBag.keyword" />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Tên danh mục</th>
+                        <th class="text-center">Hoạt động</th>
+                        <th class="text-center" colspan="2">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CategoryName</td>
+                            <td class="text-center">
+                                @if (item.IsActive == true)
+                                {
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-controller="Staff" asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-primary btn-edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a onclick="deleteUser('@item.CategoryId')" class="btn btn-danger">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
