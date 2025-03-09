@@ -33,7 +33,8 @@ namespace ProjectPrn222.Service.Implement
 
         public bool HasCategory(string categoryName)
         {
-            return _context.Categories.Any(x => x.CategoryName.Equals(categoryName, StringComparison.CurrentCultureIgnoreCase));
+            
+            return _context.Categories.Any(x => x.CategoryName.ToUpper() == categoryName.ToUpper());
         }
 
         public IQueryable<Category> GetAllCategories()

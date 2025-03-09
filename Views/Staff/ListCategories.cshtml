@@ -74,3 +74,69 @@
     </div>
 
 </body>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Thêm tài khoản mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="createModalBody">
+                <!-- Content will be loaded via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Ẩn loader khi trang đã load xong
+            $(".loader").fadeOut("slow");
+        });
+
+        // Load Create Modal
+        $('#createModal').on('show.bs.modal', function (e) {
+            $.get('@Url.Action("CreateCate", "Staff")', function (data) {
+                $('#createModalBody').html(data);
+            });
+        });
+
+        // Handle form submission
+        $(document).on('submit', '#createModal form, #editModal form', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            // Hiển thị loader khi bắt đầu gửi dữ liệu
+            $(".loader").fadeIn();
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        //alert(response.message);
+                        $('#createModal, #editModal').modal('hide');
+
+                        // Sử dụng setTimeout để đảm bảo modal đã đóng hoàn toàn
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("ListCategories", "Staff")';
+                        }, 300);
+                    } else {
+                        form.closest('.modal-body').html(response);
+                        // Ẩn loader nếu có lỗi
+                        $(".loader").fadeOut();
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi. Vui lòng thử lại.");
+                    // Ẩn loader khi có lỗi
+                    $(".loader").fadeOut();
+                }
+            });
+        });
+    </script>
+
+}
