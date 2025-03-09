@@ -61,9 +61,18 @@ namespace ProjectPrn222.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserViewModel model)
         {
+            var us = await _userManager.FindByEmailAsync("qto62949@jioso.com");
+            if (us != null)
+            {
+                Console.WriteLine($"User vẫn tồn tại với ID: {us.Id}");
+            }
+            else
+            {
+                Console.WriteLine("User không tồn tại.");
+            }
             if (ModelState.IsValid)
             {
-                if (_userManager.FindByEmailAsync(model.Email) != null)
+                if (await _userManager.FindByEmailAsync(model.Email) != null)
                 {
                     ModelState.AddModelError("", "Email đã được sử dụng. Vui lòng chọn email khác.");
                 }
@@ -80,7 +89,8 @@ namespace ProjectPrn222.Controllers
                     if (result.Succeeded)
                     {
                         TempData["Success"] = "User created successfully";
-                        return RedirectToAction(nameof(ManageUser));
+                        //return RedirectToAction(nameof(ManageUser));
+                        return Json(new { success = true});
                     }
 
                     foreach (var error in result.Errors)
@@ -97,7 +107,73 @@ namespace ProjectPrn222.Controllers
             return PartialView("_CreateUserModal", model);
         }
 
-        
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var model = new UserViewModel
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                RoleName = roles.FirstOrDefault(),
+                Password = user.PasswordHash,
+                ConfirmPassword = user.PasswordHash
+            };
+
+            ViewBag.Roles = _roleManager.Roles.Where(u => u.Name != "Admin").ToList();
+            return PartialView("_EditUserModal", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("UserId,UserName,Email,RoleName,Password,ConfirmPassword")] UserViewModel model)
+        {
+            if (id != model.UserId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    var currentRoles = await _userManager.GetRolesAsync(user);
+                    await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                    await _userManager.AddToRoleAsync(user, model.RoleName);
+                    //return RedirectToAction(nameof(ManageUser));
+                    return Json(new { success = true });
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            ViewBag.Roles = _roleManager.Roles
+                .Where(r => r.Name != "Admin")
+                .Select(r => r.Name)
+                .ToList();
+            return View(model);
+        }
+
     }
 }
 

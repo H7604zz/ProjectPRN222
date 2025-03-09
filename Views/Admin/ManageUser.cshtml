@@ -100,8 +100,28 @@
     </div>
 </div>
 
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Chỉnh sửa người dùng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Nội dung sẽ được load bằng AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
+        $(document).ready(function () {
+            // Ẩn loader khi trang đã load xong
+            $(".loader").fadeOut("slow");
+        });
+
         // Load Create Modal
         $('#createModal').on('show.bs.modal', function (e) {
             $.get('@Url.Action("Create", "Admin")', function (data) {
@@ -113,21 +133,46 @@
         $(document).on('submit', '#createModal form, #editModal form', function (e) {
             e.preventDefault();
             var form = $(this);
+            // Hiển thị loader khi bắt đầu gửi dữ liệu
+            $(".loader").fadeIn();
+
             $.ajax({
                 url: form.attr('action'),
                 type: 'POST',
                 data: form.serialize(),
                 success: function (response) {
                     if (response.success) {
-                        alert(response.message);
-                        $('#createModal').modal('hide');
-                        
-                        location.reload();
+                        //alert(response.message);
+                        $('#createModal, #editModal').modal('hide');
+
+                        // Sử dụng setTimeout để đảm bảo modal đã đóng hoàn toàn
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("ManageUser", "Admin")';
+                        }, 300);
                     } else {
                         form.closest('.modal-body').html(response);
+                        // Ẩn loader nếu có lỗi
+                        $(".loader").fadeOut();
                     }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi. Vui lòng thử lại.");
+                    // Ẩn loader khi có lỗi
+                    $(".loader").fadeOut();
                 }
             });
         });
+
+        // Load Edit Modal
+        $(document).on('click', '.btn-edit', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href'); // Lấy URL từ thuộc tính href của nút chỉnh sửa
+            $.get(url, function (data) {
+                $('#editModalBody').html(data); // Đổ dữ liệu vào modal
+                $('#editModal').modal('show'); // Hiển thị modal
+            });
+        });
+
+
     </script>
 }

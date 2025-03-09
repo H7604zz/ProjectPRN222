@@ -1,0 +1,32 @@
+﻿@model ProjectPrn222.Models.DTO.UserViewModel
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="UserId" value="@Model.UserId"/>
+    <div class="mb-3">
+        <label class="form-label">Tên đăng nhập</label>
+        <input asp-for="UserName" class="form-control" required />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Vai trò</label>
+        <select class="form-select" asp-for="RoleName" required>
+            @foreach (var role in ViewBag.Roles)
+            {
+                <option value="@role" selected="@(role.Name == Model.RoleName)">@role</option>
+            }
+        </select>
+    </div>
+    <input type="hidden" asp-for="Password" value="@Model.Password" />
+    <input type="hidden" asp-for="ConfirmPassword" value="@Model.ConfirmPassword" />
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+</form>
