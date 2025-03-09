@@ -25,11 +25,18 @@ namespace ProjectPrn222.Controllers
             _roleManager = roleManager;
         }
 
-        public ActionResult ManageUser(string? keyword, int currentPage)
+        public ActionResult ManageUser(string? keyword, string? role, int currentPage)
         {
+            ViewBag.Roles = _roleManager.Roles.Where(u => u.Name != "Admin").ToList();
+
             var listUserQuery = !string.IsNullOrEmpty(keyword)
                 ? _userService.SearchUser(keyword).Where(u => u.RoleName != "Admin")
                 : _userService.GetAllUsers().Where(u => u.RoleName != "Admin");
+
+            if (!string.IsNullOrEmpty(role))
+            {
+                listUserQuery = listUserQuery.Where(u => u.RoleName == role);
+            }
 
             int totalProduct = listUserQuery.Count();
             int totalPage = (int)Math.Ceiling((double)totalProduct / ITEM_PER_PAGE); // Tổng số trang
@@ -38,6 +45,7 @@ namespace ProjectPrn222.Controllers
             currentPage = Math.Max(1, Math.Min(currentPage, totalPage));
 
             ViewBag.keyword = keyword;
+            ViewBag.role = role;
             ViewBag.CurrentPage = currentPage;
             ViewBag.CountPage = totalPage;
 

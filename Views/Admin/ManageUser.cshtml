@@ -25,12 +25,34 @@
 
             <form asp-action="ManageUser" method="get" class="row g-3 align-items-center justify-content-center">
                 <!-- Search Input -->
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="input-group shadow-sm">
                         <input type="text" class="form-control" name="keyword"
                                placeholder="Tìm kiếm tên đăng nhập hoặc email" value="@ViewBag.keyword" />
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-search"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+                <!-- Filter Dropdown -->
+                <div class="col-md-6">
+                    <div class="input-group shadow-sm">
+                        <select name="role" class="form-control">
+                            <option value="">Chọn vai trò</option>
+                            @foreach (var role in ViewBag.Roles)
+                            {
+                                if (ViewBag.role == role.Name)
+                                {
+                                    <option value="@role.Name" selected>@role.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@role.Name">@role.Name</option>
+                                }
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="bi bi-funnel"></i> Lọc
                         </button>
                     </div>
                 </div>
