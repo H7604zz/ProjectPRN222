@@ -5,9 +5,24 @@
 }
 
 <body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
     <div class="row">
         <!-- Main Content -->
         <div class="container my-5">
+            <!-- Add Create Button -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="bi bi-plus"></i> Thêm tài khoản
+                </button>
+            </div>
+
             <form asp-action="ManageUser" method="get" class="row g-3 align-items-center justify-content-center">
                 <!-- Search Input -->
                 <div class="col-md-12">
@@ -40,7 +55,7 @@
                             <td>@item.Email</td>
                             <td>@item.RoleName</td>
                             <td class="text-center">
-                                <a asp-controller="Admin" asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-primary">
+                                <a asp-controller="Admin" asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-primary btn-edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                             </td>
@@ -68,3 +83,51 @@
         <partial name="_Pagging" model="@paggingModel" />
     </div>
 </body>
+
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Thêm tài khoản mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="createModalBody">
+                <!-- Content will be loaded via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Load Create Modal
+        $('#createModal').on('show.bs.modal', function (e) {
+            $.get('@Url.Action("Create", "Admin")', function (data) {
+                $('#createModalBody').html(data);
+            });
+        });
+
+        // Handle form submission
+        $(document).on('submit', '#createModal form, #editModal form', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        $('#createModal').modal('hide');
+                        
+                        location.reload();
+                    } else {
+                        form.closest('.modal-body').html(response);
+                    }
+                }
+            });
+        });
+    </script>
+}
