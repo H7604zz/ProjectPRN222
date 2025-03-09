@@ -7,7 +7,6 @@ using ProjectPrn222.Service.Implement;
 var builder = WebApplication.CreateBuilder(args);
 
 //DI
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
@@ -34,7 +33,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 //setting mật khẩu cho Identity
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.Password.RequireDigit = false;               // Không yêu cầu mật khẩu phải chứa số
+    options.Password.RequireDigit = false;                // Không yêu cầu mật khẩu phải chứa số
     options.Password.RequireLowercase = false;            // Không yêu cầu chữ cái thường
     options.Password.RequireUppercase = false;            // Không yêu cầu chữ cái hoa
     options.Password.RequireNonAlphanumeric = false;      // Không yêu cầu ký tự đặc biệt (ví dụ: @, #, !, ...)
