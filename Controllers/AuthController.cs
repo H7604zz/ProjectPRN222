@@ -68,7 +68,7 @@ namespace ProjectPrn222.Controllers
 
             if (result.Succeeded)
             {
-                if (_userService.IsEmailExisted(email))
+                if (_userManager.FindByEmailAsync(email) != null)
                 {
                     TempData["Error"] = "Email đã được sử dụng. Vui lòng chọn email khác.";
                     return View();

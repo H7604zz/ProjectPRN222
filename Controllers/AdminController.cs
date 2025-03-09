@@ -63,7 +63,7 @@ namespace ProjectPrn222.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_userService.IsEmailExisted(model.Email))
+                if (_userManager.FindByEmailAsync(model.Email) != null)
                 {
                     ModelState.AddModelError("", "Email đã được sử dụng. Vui lòng chọn email khác.");
                 }
@@ -97,7 +97,7 @@ namespace ProjectPrn222.Controllers
             return PartialView("_CreateUserModal", model);
         }
 
-
+        
     }
 }
 
