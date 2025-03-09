@@ -69,15 +69,6 @@ namespace ProjectPrn222.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserViewModel model)
         {
-            var us = await _userManager.FindByEmailAsync("qto62949@jioso.com");
-            if (us != null)
-            {
-                Console.WriteLine($"User vẫn tồn tại với ID: {us.Id}");
-            }
-            else
-            {
-                Console.WriteLine("User không tồn tại.");
-            }
             if (ModelState.IsValid)
             {
                 if (await _userManager.FindByEmailAsync(model.Email) != null)
