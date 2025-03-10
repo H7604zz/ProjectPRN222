@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectPrn222.Models;
 using ProjectPrn222.Service.Implement;
@@ -10,9 +11,14 @@ namespace ProjectPrn222.Controllers
     public class StaffController : Controller
     {
         public readonly ICategoryService _categoryService;
-        public StaffController(ICategoryService categoryService)
+        public readonly IProductService _productService;
+
+        private readonly int ITEM_PER_PAGE = 15;
+        private int totalPage;
+        public StaffController(ICategoryService categoryService, IProductService productService)
         {
             _categoryService = categoryService;
+            _productService = productService;
         }
         public IActionResult ListCategories(string? keyword)
         {
@@ -103,6 +109,41 @@ namespace ProjectPrn222.Controllers
                 TempData["Success"] = "Xóa danh mục thành công!";
                 return Json(new { success = true });
             }
+        }
+
+        public IActionResult ManageProduct(string? keyword, int? categoryId, int currentPage = 1)
+        {
+            //list category
+            ViewBag.Category = new SelectList(_productService.GetAllCategories().ToList(), "CategoryId", "CategoryName", categoryId);
+            // Bắt đầu từ truy vấn tìm kiếm nếu có keyword, ngược lại lấy tất cả sản phẩm
+            var productListQuery = !string.IsNullOrEmpty(keyword)
+                ? _productService.SearchProduct(keyword)
+                : _productService.GetAllProducts();
+
+            //lọc theo category
+            if (categoryId.HasValue)
+            {
+                productListQuery = productListQuery.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            int totalProduct = productListQuery.Count(); // Tổng số sản phẩm sau khi lọc
+            int totalPage = (int)Math.Ceiling((double)totalProduct / ITEM_PER_PAGE); // Tổng số trang
+
+            // Đảm bảo currentPage trong khoảng hợp lệ
+            currentPage = Math.Max(1, Math.Min(currentPage, totalPage));
+
+            // Truyền dữ liệu cho ViewBag
+            ViewBag.keyword = keyword;
+            ViewBag.CurrentPage = currentPage;
+            ViewBag.CountPage = totalPage;
+
+            // Phân trang
+            var pagedProduct = productListQuery
+                .Skip((currentPage - 1) * ITEM_PER_PAGE)
+                .Take(ITEM_PER_PAGE)
+                .ToList();
+
+            return View(pagedProduct); 
         }
     }
 }

@@ -1,0 +1,109 @@
+﻿@model IEnumerable<ProjectPrn222.Models.DTO.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+}
+
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
+    <div class="row">
+        <!-- Main Content -->
+        <div class="container my-5">
+            <!-- Add Create Button -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="bi bi-plus"></i> Thêm sản phẩm
+                </button>
+            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="container my-5">
+                <form asp-action="ManageProduct" method="get" class="row g-3 align-items-center justify-content-center">
+                    <!-- Search Input -->
+                    <div class="col-md-4">
+                        <div class="input-group shadow-sm">
+                            <input type="text" class="form-control" name="keyword"
+                                   placeholder="Tìm kiếm hoa quả" value="@ViewBag.keyword" />
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> Tìm kiếm
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Dropdown -->
+                    <div class="col-md-4">
+                        <div class="input-group shadow-sm">
+                            <select name="categoryId" class="form-select" asp-items="@ViewBag.Category">
+                                <option value="">Chọn danh mục</option>
+                            </select>
+                            <button type="submit" class="btn btn-secondary">
+                                <i class="bi bi-funnel"></i> Lọc
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Tên sản phẩm</th>
+                        <th class="text-center">Hình ảnh</th>
+                        <th class="text-center">Tên danh mục</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-center">Giá</th>
+                        <th class="text-center">Mô tả</th>
+                        <th class="text-center" colspan="2">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td><img src="@item.Image" alt=""></td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.Quanity</td>
+                            <td>@($"{item.Price:N0} VNĐ")</td>
+                            <td>@item.Description</td>
+
+                            <td class="text-center">
+                                <a asp-controller="Staff" asp-action="" asp-route-id="@item.ProductId" class="btn btn-primary btn-edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a onclick="deleteCategory('@item.ProductId')" class="btn btn-danger">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @* phân trang *@
+    @{
+        var paggingModel = new ProjectPrn222.Helpers.PaggingModel()
+            {
+                CurrentPage = ViewBag.CurrentPage,
+                CountPage = ViewBag.CountPage,
+                GenerateUrl = (int? page) => Url.Action("ManageProduct", new { currentPage = page })
+            };
+    }
+
+    <div class="col-lg-12 d-flex justify-content-center">
+        <partial name="_Pagging" model="@paggingModel" />
+    </div>
+</body>
