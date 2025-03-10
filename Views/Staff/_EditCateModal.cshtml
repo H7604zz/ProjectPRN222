@@ -1,0 +1,22 @@
+﻿@model ProjectPrn222.Models.Category
+
+<form asp-action="EditCate" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="CategoryId" type="hidden" />
+    <div class="mb-3">
+        <label class="form-label">Tên danh mục</label>
+        <input asp-for="CategoryName" class="form-control" required />
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Chọn trạng thái</label>
+        <select asp-for="IsActive" class="form-control">
+            <option value="true">Hoạt động</option>
+            <option value="false">Ngừng hoạt động</option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+</form>

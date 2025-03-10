@@ -31,10 +31,11 @@ namespace ProjectPrn222.Service.Implement
             return _context.Categories.FirstOrDefault(x => x.CategoryId == id);
         }
 
-        public bool HasCategory(string categoryName)
+        public bool HasCategory(string categoryName, int currentCategoryId)
         {
-            
-            return _context.Categories.Any(x => x.CategoryName.ToUpper() == categoryName.ToUpper());
+            return _context.Categories.Any(x =>
+                x.CategoryName.ToUpper() == categoryName.ToUpper() &&
+                x.CategoryId != currentCategoryId);
         }
 
         public IQueryable<Category> GetAllCategories()
@@ -44,6 +45,10 @@ namespace ProjectPrn222.Service.Implement
         public IQueryable<Category> SearchCategories(string keyword)
         {
             return _context.Categories.Where(c=>c.CategoryName.Contains(keyword));
+        }
+        public bool HasCateInProducts(int id)
+        {
+            return _context.Products.Any(c => c.CategoryId == id);
         }
     }
 }

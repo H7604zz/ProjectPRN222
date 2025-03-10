@@ -7,9 +7,10 @@ namespace ProjectPrn222.Service.Iterface
         void AddCategory(Category category);
         void UpdateCategory(Category category);
         void DeleteCategory(Category category);
-        bool HasCategory(string categoryName);
+        bool HasCategory(string categoryName, int currentCategoryId);
         Category? GetCategory(int id);
         IQueryable<Category> GetAllCategories();
         IQueryable<Category> SearchCategories(string keyword);
+        bool HasCateInProducts(int id);
     }
 }
