@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjectPrn222.Models;
 using ProjectPrn222.Service.Implement;
 using ProjectPrn222.Service.Iterface;
@@ -80,6 +82,27 @@ namespace ProjectPrn222.Controllers
             }
 
             return PartialView("_EditCateModal", model);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteCate(int id)
+        {
+            var category = _categoryService.GetCategory(id);
+            if (category == null)
+            {
+                return Json(new { success = false, message = "Đang có sản phẩm trong danh mục này, không thể xóa." });
+            }
+            else if (_categoryService.HasCateInProducts(id))
+            {
+                return Json(new { success = false, message = "Đang có sản phẩm trong danh mục này, không thể xóa." });
+            }
+        
+            else
+            {
+                _categoryService.DeleteCategory(category);
+                TempData["Success"] = "Xóa danh mục thành công!";
+                return Json(new { success = true });
+            }
         }
     }
 }

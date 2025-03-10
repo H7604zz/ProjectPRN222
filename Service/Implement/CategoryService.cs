@@ -1,4 +1,5 @@
-﻿using ProjectPrn222.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectPrn222.Models;
 using ProjectPrn222.Service.Iterface;
 
 namespace ProjectPrn222.Service.Implement
@@ -48,7 +49,7 @@ namespace ProjectPrn222.Service.Implement
         }
         public bool HasCateInProducts(int id)
         {
-            return _context.Products.Any(c => c.CategoryId == id);
+            return _context.Products.AsNoTracking().Any(c => c.CategoryId == id);
         }
     }
 }
