@@ -141,28 +141,35 @@ namespace ProjectPrn222.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByIdAsync(id);
-                if (user == null)
+                if (await _userManager.FindByEmailAsync(model.Email) != null)
                 {
-                    return NotFound();
+                    ModelState.AddModelError("", "Email đã được sử dụng. Vui lòng chọn email khác.");
                 }
-
-                user.UserName = model.UserName;
-                user.Email = model.Email;
-
-                var result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
+                else
                 {
-                    var currentRoles = await _userManager.GetRolesAsync(user);
-                    await _userManager.RemoveFromRolesAsync(user, currentRoles);
-                    await _userManager.AddToRoleAsync(user, model.RoleName);
-                    //return RedirectToAction(nameof(ManageUser));
-                    return Json(new { success = true });
-                }
+                    var user = await _userManager.FindByIdAsync(id);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    user.UserName = model.UserName;
+                    user.Email = model.Email;
+
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        var currentRoles = await _userManager.GetRolesAsync(user);
+                        await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                        await _userManager.AddToRoleAsync(user, model.RoleName);
+                        //return RedirectToAction(nameof(ManageUser));
+                        return Json(new { success = true });
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
 
@@ -170,7 +177,7 @@ namespace ProjectPrn222.Controllers
                 .Where(r => r.Name != "Admin")
                 .Select(r => r.Name)
                 .ToList();
-            return View(model);
+            return PartialView("_CreateUserModal", model);
         }
 
         [HttpPost]
