@@ -87,7 +87,7 @@ namespace ProjectPrn222.Controllers
                     await _userManager.AddToRoleAsync(user, model.RoleName);
                     if (result.Succeeded)
                     {
-                        TempData["Success"] = "User created successfully";
+                        TempData["Success"] = "Tạo tài khoản thành công.";
                         //return RedirectToAction(nameof(ManageUser));
                         return Json(new { success = true});
                     }
@@ -141,7 +141,8 @@ namespace ProjectPrn222.Controllers
 
             if (ModelState.IsValid)
             {
-                if (await _userManager.FindByEmailAsync(model.Email) != null)
+                var existingUser = await _userManager.FindByEmailAsync(model.Email);
+                if (existingUser != null && existingUser.Id != model.UserId)
                 {
                     ModelState.AddModelError("", "Email đã được sử dụng. Vui lòng chọn email khác.");
                 }
@@ -162,6 +163,7 @@ namespace ProjectPrn222.Controllers
                         var currentRoles = await _userManager.GetRolesAsync(user);
                         await _userManager.RemoveFromRolesAsync(user, currentRoles);
                         await _userManager.AddToRoleAsync(user, model.RoleName);
+                        TempData["Success"] = "Cập nhật tài khoản thành công.";
                         //return RedirectToAction(nameof(ManageUser));
                         return Json(new { success = true });
                     }
