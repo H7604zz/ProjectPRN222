@@ -16,6 +16,7 @@ public partial class Product
     public int CategoryId { get; set; }
 
     public string? Description { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
