@@ -68,7 +68,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr class="@(item.IsActive == false ? "opacity-50 text-muted bg-light" : "")">
                             <td>@item.ProductName</td>
                             <td class="text-center">
                                 <div class="ratio ratio-1x1" style="width: 100px; margin: 0 auto;">
