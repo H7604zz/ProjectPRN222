@@ -13,6 +13,6 @@ namespace ProjectPrn222.Service.Iterface
         ProductViewModel? GetProductById(int id);
         IQueryable<ProductViewModel>? SearchProduct(string keyword);
         IQueryable<Category> GetAllCategories();
-        bool HasProductName(string productName);
+        bool HasProductName(string productName, int productId);
     }
 }

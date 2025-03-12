@@ -105,9 +105,9 @@ namespace ProjectPrn222.Service.Implement
             return _context.Categories; 
         }
 
-        public bool HasProductName(string productName)
+        public bool HasProductName(string productName, int productId)
         {
-            return _context.Products.Any(p => p.ProductName.ToLower() == productName.ToLower());
+            return _context.Products.Any(p => p.ProductName.ToLower() == productName.ToLower() && p.ProductId != productId);
         }
     }
 }

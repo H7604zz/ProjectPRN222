@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ProjectPrn222.Helpers;
 using ProjectPrn222.Models;
 using ProjectPrn222.Models.DTO;
 using ProjectPrn222.Service.Implement;
@@ -18,7 +19,7 @@ namespace ProjectPrn222.Controllers
         public readonly IProductService _productService;
         public readonly ICloudinaryService _cloudinaryService;
 
-        private readonly int ITEM_PER_PAGE = 15;
+        private readonly int ITEM_PER_PAGE = 10;
         private int totalPage;
         public StaffController(ICategoryService categoryService,
                                 IProductService productService,
@@ -157,7 +158,8 @@ namespace ProjectPrn222.Controllers
         [HttpGet]
         public IActionResult CreateProduct()
         {
-            ViewBag.Category = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName");
+            var categories = _productService.GetAllCategories().Where(c => c.IsActive == true).ToList();
+            ViewBag.Category = new SelectList(categories, "CategoryId", "CategoryName");
             return View("CreateProduct");
         }
 
@@ -167,7 +169,7 @@ namespace ProjectPrn222.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_productService.HasProductName(model.ProductName))
+                if (_productService.HasProductName(model.ProductName, model.ProductId))
                 {
                     ModelState.AddModelError("", "Tên sản phẩm này đã tồn tại.");
                 }
@@ -197,12 +199,85 @@ namespace ProjectPrn222.Controllers
                     return RedirectToAction("ManageProduct", "Staff");
                 }
             }
-            ViewBag.Category = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName", model.CategoryId);
+            var categories = _productService.GetAllCategories().Where(c => c.IsActive == true).ToList();
+            ViewBag.Category = new SelectList(categories, "CategoryId", "CategoryName", model.CategoryId);
             ViewBag.productname = model.ProductName;
             ViewBag.quantity = model.Quanity;
             ViewBag.price = model.Price;
             ViewBag.description = model.Description;
             return View("CreateProduct");
+        }
+
+
+        [HttpGet]
+        public IActionResult EditProduct(int id)
+        {
+            var categories = _productService.GetAllCategories().Where(c => c.IsActive == true).ToList();
+            ViewBag.Category = new SelectList(categories, "CategoryId", "CategoryName");
+            var product = _productService.GetProductById(id);
+            if (product == null) return NotFound();
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var categories = _productService.GetAllCategories().Where(c => c.IsActive == true).ToList();
+                ViewBag.Category = new SelectList(categories, "CategoryId", "CategoryName", model.CategoryId);
+                return View(model);
+            }
+
+            var product = _productService.GetProductById(model.ProductId);
+            if (product == null) return NotFound();
+
+            //kiểm tra trùng lặp tên
+            if (_productService.HasProductName(model.ProductName, model.ProductId))
+            {
+                ModelState.AddModelError("", "Tên sản phẩm này đã tồn tại.");
+                var categories = _productService.GetAllCategories().Where(c => c.IsActive == true).ToList();
+                ViewBag.Category = new SelectList(categories, "CategoryId", "CategoryName", model.CategoryId);
+                return View(model);
+            }
+
+            //kiểm tra có thay đổi ảnh không
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+                string imageUrl = await _cloudinaryService.UploadImageAsync(model.ImageFile);
+                model.Image = imageUrl;
+            }
+            else
+            {
+                model.Image = product.Image; // Giữ ảnh cũ
+            }
+
+            var productModel = new Product
+            {
+                ProductId = model.ProductId,
+                ProductName = model.ProductName,
+                Image = model.Image,
+                Quanity = model.Quanity,
+                CategoryId = model.CategoryId,
+                Description = model.Description,
+                IsActive = model.IsActive,
+            };
+            _productService.EditProduct(productModel);
+
+            //có sự thay đổi về giá
+            if (product.Price != model.Price)
+            {
+                var productPriceMode = new ProductPrice
+                {
+                    ProductId = model.ProductId,
+                    Price = (float)model.Price,
+                    UpdateDate = DateTime.Now,
+                };
+                _productService.AddPriceForProduct(productPriceMode);
+            }
+            TempData["Success"] = "Chỉnh sửa sản phẩm thành công";
+
+            return RedirectToAction("ManageProduct");
         }
 
     }
