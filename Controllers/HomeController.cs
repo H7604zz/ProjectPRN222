@@ -26,7 +26,8 @@ namespace ProjectPrn222.Controllers
         public IActionResult ListProduct(string? keyword, int? categoryId, int currentPage = 1)
         {
             //list category
-            ViewBag.Category = new SelectList(_productService.GetAllCategories().ToList(), "CategoryId", "CategoryName", categoryId);
+            var categories = _productService.GetAllCategories().Where(c => c.IsActive == true).ToList();
+            ViewBag.Category = new SelectList(categories, "CategoryId", "CategoryName", categoryId);
             // Bắt đầu từ truy vấn tìm kiếm nếu có keyword, ngược lại lấy tất cả sản phẩm
             var productListQuery = !string.IsNullOrEmpty(keyword)
                 ? _productService.SearchProduct(keyword)
