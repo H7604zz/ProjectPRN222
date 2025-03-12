@@ -86,7 +86,7 @@
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a onclick="deleteCategory('@item.ProductId')" class="btn btn-danger">
+                                <a onclick="deleteProduct('@item.ProductId')" class="btn btn-danger">
                                     <i class="bi bi-trash3"></i>
                                 </a>
                             </td>
@@ -119,5 +119,32 @@
             $(".loader").fadeOut("slow");
         });
 
+        function deleteProduct(productId) {
+            if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+                $(".loader").fadeIn();
+
+                $.ajax({
+                    url: '/Staff/DeleteProduct',
+                    type: 'POST',
+                    data:
+                    {
+                        id: productId
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            $(".loader").fadeOut();
+                            if (response.message) {
+                                alert(response.message);
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        $(".loader").fadeOut();
+                    }
+                });
+            }
+        }
     </script>
 }

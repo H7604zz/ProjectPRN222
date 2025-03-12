@@ -105,7 +105,7 @@ namespace ProjectPrn222.Controllers
             var category = _categoryService.GetCategory(id);
             if (category == null)
             {
-                return Json(new { success = false, message = "Đang có sản phẩm trong danh mục này, không thể xóa." });
+                return Json(new { success = false, message = "Danh mục này không tồn tại." });
             }
             else if (_categoryService.HasCateInProducts(id))
             {
@@ -280,5 +280,35 @@ namespace ProjectPrn222.Controllers
             return RedirectToAction("ManageProduct");
         }
 
+        [HttpPost]
+        public IActionResult DeleteProduct(int id)
+        {
+            var product = _productService.GetProductById(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            //kiểm tra nếu sản phẩm này đã từng được mua thì không thể xóa
+            //else if ()
+            //{
+               
+            //}
+            else
+            {
+                var productModel = new Product
+                {
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    Image = product.Image,
+                    Quanity = product.Quanity,
+                    CategoryId = product.CategoryId,
+                    Description = product.Description,
+                    IsActive = product.IsActive,
+                };
+                _productService.DeleteProduct(productModel);
+                TempData["Success"] = "Xóa sản phẩm thành công!";
+                return Json(new { success = true }); ;
+            }
+        }
     }
 }
