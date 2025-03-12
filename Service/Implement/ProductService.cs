@@ -48,6 +48,7 @@ namespace ProjectPrn222.Service.Implement
                     CategoryId = p.CategoryId,
                     Description = p.Description,
                     CategoryName = p.Category.CategoryName,
+                    IsActive = p.IsActive,
                     Price = (decimal)(p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().Price),
                     PriceUpdateDate = p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().UpdateDate
                 });
@@ -67,6 +68,7 @@ namespace ProjectPrn222.Service.Implement
                     CategoryId = p.CategoryId,
                     Description = p.Description,
                     CategoryName = p.Category.CategoryName,
+                    IsActive = p.IsActive,
                     Price = (decimal)(p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().Price),
                     PriceUpdateDate = p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().UpdateDate
                 })
@@ -89,6 +91,7 @@ namespace ProjectPrn222.Service.Implement
                     CategoryId = p.CategoryId,
                     Description = p.Description,
                     CategoryName = p.Category.CategoryName,
+                    IsActive = p.IsActive,
                     Price = (decimal)(p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().Price),
                     PriceUpdateDate = p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().UpdateDate
                 })

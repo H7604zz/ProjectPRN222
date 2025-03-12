@@ -22,6 +22,7 @@ namespace ProjectPrn222.Models.DTO
 		[Range(1000, double.MaxValue, ErrorMessage = "Giá phải lớn hơn 1000.")]
 		public decimal Price { get; set; }
         public DateTime PriceUpdateDate { get; set; } = DateTime.Now;
+		public bool IsActive { get; set; } = true;	
 
 		//các sản phẩm tương tự
 		public IEnumerable<ProductViewModel>? SimilarProducts { get; set; }

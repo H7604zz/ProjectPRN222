@@ -38,6 +38,9 @@ namespace ProjectPrn222.Controllers
                 productListQuery = productListQuery.Where(p => p.CategoryId == categoryId.Value);    
             }
 
+            //lọc các sản phẩm đang hoạt động
+            productListQuery = productListQuery.Where(p => p.IsActive == true);
+
             int totalProduct = productListQuery.Count(); // Tổng số sản phẩm sau khi lọc
             int totalPage = (int)Math.Ceiling((double)totalProduct / ITEM_PER_PAGE); // Tổng số trang
 
