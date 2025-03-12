@@ -12,12 +12,14 @@ namespace ProjectPrn222.Service.Implement
         {
             _context = context;
         }
-        public void AddProduct(Product product)
-        {
-            _context.Products.Add(product);
-            _context.SaveChanges();
-        }
-        public void AddPriceForProduct(ProductPrice productPrice)
+		public int AddProduct(Product product)
+		{
+			_context.Products.Add(product);
+			_context.SaveChanges();
+
+			return product.ProductId;
+		}
+		public void AddPriceForProduct(ProductPrice productPrice)
         {
             _context.ProductPrices.Add(productPrice);
             _context.SaveChanges();
@@ -98,6 +100,11 @@ namespace ProjectPrn222.Service.Implement
         public IQueryable<Category> GetAllCategories()
         {
             return _context.Categories; 
+        }
+
+        public bool HasProductName(string productName)
+        {
+            return _context.Products.Any(p => p.ProductName.ToLower() == productName.ToLower());
         }
     }
 }

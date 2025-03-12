@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectPrn222.Models;
+using ProjectPrn222.Models.DTO;
 using ProjectPrn222.Service.Implement;
 using ProjectPrn222.Service.Iterface;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace ProjectPrn222.Controllers
 {
@@ -12,13 +16,17 @@ namespace ProjectPrn222.Controllers
     {
         public readonly ICategoryService _categoryService;
         public readonly IProductService _productService;
+        public readonly ICloudinaryService _cloudinaryService;
 
         private readonly int ITEM_PER_PAGE = 15;
         private int totalPage;
-        public StaffController(ICategoryService categoryService, IProductService productService)
+        public StaffController(ICategoryService categoryService,
+                                IProductService productService,
+                                ICloudinaryService cloudinaryService)
         {
             _categoryService = categoryService;
             _productService = productService;
+            _cloudinaryService = cloudinaryService;
         }
         public IActionResult ListCategories(string? keyword)
         {
@@ -102,7 +110,7 @@ namespace ProjectPrn222.Controllers
             {
                 return Json(new { success = false, message = "Đang có sản phẩm trong danh mục này, không thể xóa." });
             }
-        
+
             else
             {
                 _categoryService.DeleteCategory(category);
@@ -143,7 +151,59 @@ namespace ProjectPrn222.Controllers
                 .Take(ITEM_PER_PAGE)
                 .ToList();
 
-            return View(pagedProduct); 
+            return View(pagedProduct);
         }
+
+        [HttpGet]
+        public IActionResult CreateProduct()
+        {
+            ViewBag.Category = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName");
+            return View("CreateProduct");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateProduct(ProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_productService.HasProductName(model.ProductName))
+                {
+                    ModelState.AddModelError("", "Tên sản phẩm này đã tồn tại.");
+                }
+                else
+                {
+                    string imageUrl = await _cloudinaryService.UploadImageAsync(model.ImageFile);
+                    // Lưu URL vào model
+                    var product = new Product
+                    {
+                        ProductName = model.ProductName,
+                        Image = imageUrl,
+                        Quanity = model.Quanity,
+                        CategoryId = model.CategoryId,
+                        Description = model.Description,
+                    };
+                    int newProductId = _productService.AddProduct(product);
+                    var productPrice = new ProductPrice
+                    {
+                        ProductId = newProductId,
+                        Price = (float)model.Price,
+                        UpdateDate = DateTime.Now
+                    };
+
+                    _productService.AddPriceForProduct(productPrice);
+
+                    TempData["Success"] = "Thêm sản phẩm thành công";
+                    return RedirectToAction("ManageProduct", "Staff");
+                }
+            }
+            ViewBag.Category = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName", model.CategoryId);
+            ViewBag.productname = model.ProductName;
+            ViewBag.quantity = model.Quanity;
+            ViewBag.price = model.Price;
+            ViewBag.description = model.Description;
+            return View("CreateProduct");
+        }
+
     }
 }

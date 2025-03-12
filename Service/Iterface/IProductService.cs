@@ -5,7 +5,7 @@ namespace ProjectPrn222.Service.Iterface
 {
     public interface IProductService
     {
-        void AddProduct(Product product);
+        int AddProduct(Product product);
         void AddPriceForProduct(ProductPrice productPrice);
         void DeleteProduct(Product product);
         void EditProduct(Product product);
@@ -13,5 +13,6 @@ namespace ProjectPrn222.Service.Iterface
         ProductViewModel? GetProductById(int id);
         IQueryable<ProductViewModel>? SearchProduct(string keyword);
         IQueryable<Category> GetAllCategories();
+        bool HasProductName(string productName);
     }
 }

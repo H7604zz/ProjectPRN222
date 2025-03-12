@@ -18,9 +18,9 @@
         <div class="container my-5">
             <!-- Add Create Button -->
             <div class="mb-3">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+                <a type="button" class="btn btn-success" asp-action="CreateProduct">
                     <i class="bi bi-plus"></i> Thêm sản phẩm
-                </button>
+                </a>
             </div>
 
             <!-- Search and Filter Section -->
@@ -111,3 +111,13 @@
         <partial name="_Pagging" model="@paggingModel" />
     </div>
 </body>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Ẩn loader khi trang đã load xong
+            $(".loader").fadeOut("slow");
+        });
+
+    </script>
+}
