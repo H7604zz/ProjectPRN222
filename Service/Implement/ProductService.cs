@@ -51,7 +51,8 @@ namespace ProjectPrn222.Service.Implement
                     IsActive = p.IsActive,
                     Price = (decimal)(p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().Price),
                     PriceUpdateDate = p.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().UpdateDate
-                });
+                })
+                .OrderByDescending(p => p.IsActive); ;
         }
 
         public ProductViewModel? GetProductById(int id)
