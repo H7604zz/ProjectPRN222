@@ -1,0 +1,57 @@
+﻿@model ProjectPrn222.Models.DTO.ProductViewModel
+
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+    <div class="card" style="margin: 0 200px 0 200px">
+        <div class="card-header">
+            <h5 class="card-title">Tạo sản phẩm mới</h5>
+        </div>
+        <div class="card-body">
+            <form id="createProductForm" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="mb-3">
+                    <label class="form-label">Tên sản phẩm</label>
+                    <input asp-for="ProductName" class="form-control" value="@ViewBag.productname" required />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Hình ảnh</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" accept=".jpg,.png,.jpeg" required />
+                    @* <span asp-validation-for="ImageFile" class="text-danger"></span> *@
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Số lượng</label>
+                    <input asp-for="Quanity" class="form-control" value="@ViewBag.quantity" required />
+                    <span asp-validation-for="Quanity" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tên danh mục</label>
+                    <select asp-for="CategoryId" class="form-select" asp-items="@ViewBag.Category">
+                        <option value="">Chọn danh mục</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mô tả</label>
+                    <input asp-for="Description" class="form-control" value="@ViewBag.description" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Giá</label>
+                    <input asp-for="Price" class="form-control" value="@ViewBag.price" required />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Tạo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
