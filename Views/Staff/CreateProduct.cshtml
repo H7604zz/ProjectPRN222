@@ -13,7 +13,7 @@
             <h5 class="card-title">Tạo sản phẩm mới</h5>
         </div>
         <div class="card-body">
-            <form id="createProductForm" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+            <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="mb-3">
                     <label class="form-label">Tên sản phẩm</label>
@@ -48,7 +48,7 @@
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <a asp-action="ManageProduct" class="btn btn-secondary">Quay về</a>
                     <button type="submit" class="btn btn-primary">Tạo</button>
                 </div>
             </form>
