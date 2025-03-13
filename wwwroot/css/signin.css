@@ -1,4 +1,11 @@
-﻿.form-signin {
+﻿.bg-img {
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4jT89NvCQ4WC9Ecwnby70qq8mzbj5xmrRhQ&s');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form-signin {
     width: 100%;
     max-width: 330px;
     padding: 15px;
