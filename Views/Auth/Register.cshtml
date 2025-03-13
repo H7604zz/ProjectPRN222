@@ -13,13 +13,13 @@
                 <h1 class="h3 mb-3 fw-normal">Đăng ký tài khoản mới</h1>
 
                 <div class="form-floating mb-2">
-                    <input asp-for="UserName" class="form-control" />
+                    <input asp-for="UserName" class="form-control" placeholder="Tên đăng nhập"/>
                     <label asp-for="UserName">Tên đăng nhập</label>
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating mb-2">
-                    <input asp-for="Email" type="email" class="form-control" />
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Email@example.com"/>
                     <label asp-for="Email">Email</label>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
