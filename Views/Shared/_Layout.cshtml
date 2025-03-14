@@ -69,9 +69,12 @@
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity?.IsAuthenticated ?? false)
                         {
-                            <li class="d-flex align-items-center nav-item">
-                                <a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
-                            </li>
+                            @if (User.IsInRole("Customer"))
+                            {
+                                <li class="d-flex align-items-center nav-item">
+                                    <a class="shopping-cart" asp-controller="Customer" asp-action="Cart"><i class="fas fa-shopping-cart"></i></a>
+                                </li>
+                            }
 
                             <li class="nav-item">
                                 <span class="nav-link">Xin chào, @User.Identity?.Name!</span>
