@@ -430,11 +430,11 @@ namespace ProjectPrn222.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<decimal?>("MaxDiscountAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float?>("MaxDiscountAmount")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("MinOrderValue")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("MinOrderValue")
+                        .HasColumnType("real");
 
                     b.HasKey("VourcherId");
 
