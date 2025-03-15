@@ -146,7 +146,7 @@ namespace ProjectPrn222.Controllers
 				};
 				_cartService.AddCart(cartItem);
 			}
-
+			TempData["Success"] = $"Thêm sản phẩm {product.ProductName} thành công";
 			return RedirectToAction("Index", "Home");
 		}
     }
