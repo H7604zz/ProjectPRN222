@@ -41,10 +41,11 @@
 						<p class="single-product-pricing">Giá (theo cân): @($"{Model.Price:N0} VNĐ")</p>
 						<p>@Model.Description</p>
 						<div class="single-product-form">
-							<form action="#">
-								<input type="number" placeholder="0">
+							<form method="get" asp-controller="Customer" asp-action="AddToCart">
+								<input type="hidden" name="productId" value="@Model.ProductId">
+								<input type="number" name="quantity" min="1" value="1">
+								<button type="submit" class="cart-btn"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
 							</form>
-							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
 							<p><strong>Categories: </strong>@Model.CategoryName</p>
 						</div>
 						<h4>Share:</h4>

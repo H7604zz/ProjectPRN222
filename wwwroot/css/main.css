@@ -432,7 +432,7 @@ a.read-more-btn:hover {
   color: #F28123;
 }
 
-a.boxed-btn, a.bordered-btn, a.cart-btn {
+a.boxed-btn, a.bordered-btn, .cart-btn {
   border-radius: 50px;
 }
 
@@ -1220,13 +1220,11 @@ div.owl-controls div.owl-nav div:hover {
   box-shadow: none;
 }
 
-a.cart-btn {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
+.cart-btn {
   transition: 0.3s;
 }
 
-a.cart-btn:hover {
+.cart-btn:hover {
   background-color: #051922;
   color: #F28123;
 }
@@ -2322,7 +2320,7 @@ p.product-price span {
   font-weight: 400;
 }
 
-a.cart-btn {
+.cart-btn {
   font-family: 'Poppins', sans-serif;
   display: inline-block;
   background-color: #F28123;
@@ -2330,7 +2328,7 @@ a.cart-btn {
   padding: 10px 20px;
 }
 
-a.cart-btn i {
+.cart-btn i {
   margin-right: 5px;
 }
 
@@ -2375,7 +2373,7 @@ input[type="number"] {
   margin-bottom: 15px;
 }
 
-.single-product-form a.cart-btn {
+.single-product-form .cart-btn {
   margin-bottom: 15px;
 }
 
