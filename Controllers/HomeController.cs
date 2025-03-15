@@ -19,7 +19,10 @@ namespace ProjectPrn222.Controllers
 
         public IActionResult Index()
         {
-            var hotProduct = _productService.GetAllProducts().Take(3).ToList();
+            var hotProduct = _productService.GetAllProducts()
+                .Where(p => p.Quanity > 0 && p.IsActive == true)
+                .OrderBy(x => Guid.NewGuid())
+				.Take(3).ToList();
             return View(hotProduct);
         }
 
@@ -72,7 +75,8 @@ namespace ProjectPrn222.Controllers
 
             var similarProducts = _productService.GetAllProducts()
                 .Where(p => p.CategoryId == productDetails.CategoryId && p.ProductId != productid)
-                .Take(6).ToList();
+                .OrderBy(x => Guid.NewGuid())
+				.Take(6).ToList();
 
             //sản phẩm liên quan
 			productDetails.SimilarProducts = similarProducts;
