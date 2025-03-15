@@ -151,5 +151,11 @@ namespace ProjectPrn222.Controllers
 			TempData["Success"] = $"Thêm sản phẩm {product.ProductName} thành công";
 			return RedirectToAction("Index", "Home");
 		}
+
+		public IActionResult Checkout()
+		{
+
+			return View();
+		}
     }
 }
