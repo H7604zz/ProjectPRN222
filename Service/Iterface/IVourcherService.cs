@@ -6,6 +6,6 @@ namespace ProjectPrn222.Service.Iterface
 	{
 		void AddVourcher(Vourcher vourcher);
 		void UpdateVourcher(Vourcher vourcher);
-
+		Vourcher? GetVourcher(string code);
 	}
 }

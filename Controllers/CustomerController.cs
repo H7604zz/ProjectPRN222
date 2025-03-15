@@ -20,16 +20,19 @@ namespace ProjectPrn222.Controllers
         private readonly IUserService _userService;
         private readonly ICartService _cartService;
         private readonly IProductService _productService;
+        private readonly IVourcherService _vourcherService;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public CustomerController(IUserService userService,
 								  ICartService cartService,
                                   IProductService productService,
+								  IVourcherService vocherService,
                                   UserManager<ApplicationUser> userManager)
         {
             _userService = userService;
             _cartService = cartService;
             _productService = productService;
+			_vourcherService = vocherService;
             _userManager = userManager;
         }
 
@@ -46,11 +49,13 @@ namespace ProjectPrn222.Controllers
 			//lấy thông tin của sản phẩm theo userId
             var listCart = _cartService.GetCartsOfCustomer(userId);
 
-            //tính tiền ship
-            ViewBag.Shipping = 30000f;
-
-			//giảm giá (nếu có)
-
+			//tạm tính
+			var subtotal = 0f;
+			foreach (var cart in listCart)
+			{
+				subtotal += cart.QuantityInCart * cart.Price;
+			}
+			ViewBag.subtotal = subtotal;
 
 			return View(listCart);
         }
@@ -157,5 +162,58 @@ namespace ProjectPrn222.Controllers
 
 			return View();
 		}
-    }
+
+		[HttpPost]
+		public IActionResult ApplyVoucher(string voucherCode)
+		{
+			if (string.IsNullOrWhiteSpace(voucherCode))
+			{
+				return Json(new { success = false, message = "Vui lòng nhập mã giảm giá!" });
+			}
+
+			// Lấy thông tin mã giảm giá từ DB
+			var voucher = _vourcherService.GetVourcher(voucherCode);
+
+			if (voucher == null)
+			{
+				return Json(new { success = false, message = "Mã giảm giá không hợp lệ hoặc đã hết hạn!" });
+			}
+
+			// Kiểm tra thời hạn của mã giảm giá
+			if (voucher.ExpiryDate < DateOnly.FromDateTime(DateTime.Now))
+			{
+				return Json(new { success = false, message = "Mã giảm giá đã hết hạn!" });
+			}
+
+			// Lấy giỏ hàng của người dùng
+			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+			var cartItems = _cartService.GetCartsOfCustomer(userId);
+			var subtotal = 0f;
+			foreach (var cartItem in cartItems)
+			{
+				subtotal += cartItem.QuantityInCart * cartItem.Price;
+			}
+
+			// Kiểm tra điều kiện giá trị đơn hàng tối thiểu
+			if (subtotal < voucher.MinOrderValue)
+			{
+				return Json(new { success = false, message = $"Đơn hàng phải có giá trị tối thiểu {voucher.MinOrderValue:N0} VNĐ!" });
+			}
+
+			// Tính số tiền giảm giá
+			float discountAmount = subtotal * voucher.Discount / 100;
+
+			// Giới hạn mức giảm giá tối đa (nếu có)
+			if (voucher.MaxDiscountAmount.HasValue && discountAmount > voucher.MaxDiscountAmount.Value)
+			{
+				discountAmount = voucher.MaxDiscountAmount.Value;
+			}
+
+			HttpContext.Session.SetString("VoucherCode", voucherCode);
+			HttpContext.Session.SetInt32("DiscountAmount", (int)discountAmount);
+
+			return Json(new { success = true, discountAmount = discountAmount, message = "Mã giảm giá đã được áp dụng!" });
+		}
+
+	}
 }

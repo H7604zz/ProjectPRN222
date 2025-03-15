@@ -4,10 +4,6 @@
 	ViewData["Title"] = "Giỏ hàng";
 }
 
-@{
-	var subtotal = 0f;
-}
-
 <body>
     <!--PreLoader-->
     <div class="loader">
@@ -56,8 +52,6 @@
 										</td>
 										<td class="product-total">@item.TotalPrice</td>
 									</tr>
-									//tính chi phí tạm tính
-									subtotal += item.TotalPrice;
 								}
 							</tbody>
 						</table>
@@ -76,15 +70,15 @@
 							<tbody>
 								<tr class="total-data">
 									<td><strong>Tạm tính: </strong></td>
-									<td>@($"{subtotal:N0} VNĐ")</td>
+									<td>@($"{ViewBag.subtotal:N0} VNĐ")</td>
 								</tr>
 								<tr class="total-data">
-									<td><strong>Phí ship: </strong></td>
-									<td>@($"{ViewBag.Shipping:N0} VNĐ")</td>
+									<td><strong>Giảm giá: </strong></td>
+									<td>@($"{ViewBag.DiscountAmount ?? 0:N0} VNĐ")</td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Tổng cộng: </strong></td>
-									<td>@($"{(subtotal + ViewBag.Shipping):N0} VNĐ")</td>
+									<td>@($"{(ViewBag.subtotal - (ViewBag.DiscountAmount ?? 0)):N0} VNĐ")</td>
 								</tr>
 							</tbody>
 						</table>
@@ -97,9 +91,9 @@
 					<div class="coupon-section">
 						<h3>Áp dụng mã giảm giá</h3>
 						<div class="coupon-form-wrap">
-							<form action="index.html">
-								<p><input type="text" placeholder="Coupon"></p>
-								<p><input type="submit" value="Apply"></p>
+							<form id="voucherForm">
+								<p><input type="text" placeholder="Mã giảm giá">@ViewBag.VoucherCode</p>
+								<p><input type="submit" value="Áp dụng"></p>
 							</form>
 						</div>
 					</div>
@@ -170,6 +164,32 @@
 						}
 					},
 					error: function () {
+						alert("Có lỗi xảy ra, vui lòng thử lại!");
+					}
+				});
+			});
+		});
+
+		$(document).ready(function () {
+			$("#voucherForm").submit(function (e) {
+				e.preventDefault();
+
+				let voucherCode = $("input[type='text']").val().trim();
+
+				$.ajax({
+					url: '@Url.Action("ApplyVoucher", "Customer")',
+					type: 'POST',
+					data: { voucherCode: voucherCode },
+					success: function (response) {
+						if (response.success) {
+							alert(response.message);
+							location.reload(); // Cập nhật lại giỏ hàng sau khi áp dụng mã
+						} else {
+							alert(response.message);
+						}
+					},
+					error: function (xhr, status, error) {
+						console.log("Lỗi AJAX:", xhr.responseText);
 						alert("Có lỗi xảy ra, vui lòng thử lại!");
 					}
 				});

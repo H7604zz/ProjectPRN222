@@ -21,5 +21,10 @@ namespace ProjectPrn222.Service.Implement
 			_context.Vourchers.Update(vourcher);
 			_context.SaveChanges();
 		}
+
+		public Vourcher? GetVourcher(string code)
+		{
+			return _context.Vourchers.FirstOrDefault(v => v.Code == code && v.IsActive);
+		}
 	}
 }
