@@ -37,7 +37,11 @@
 								@foreach(var item in Model)
 								{
 									<tr class="table-body-row">
-										<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
+										<td class="product-remove">
+											<a href="#" class="remove-from-cart" data-productid="@item.ProductId">
+												<i class="far fa-window-close"></i>
+											</a>
+										</td>
 										<td>
 											<a asp-controller="Home" asp-action="ProductDetails" asp-route-productid="@item.ProductId">
 												<img class="ratio ratio-1x1" style="width: 100px; margin: 0 auto;" src="@item.ProductImage" alt=""></a>
@@ -145,5 +149,28 @@
 			});
 		});
 
+		$(document).ready(function () {
+			$(".remove-from-cart").click(function (e) {
+				e.preventDefault();
+
+				let productId = $(this).data("productid");
+
+				$.ajax({
+					url: '@Url.Action("RemoveFromCart", "Customer")',
+					type: 'POST',
+					data: { productId: productId },
+					success: function (response) {
+						if (response.success) {
+							location.reload(); // Reload lại trang sau khi xóa thành công
+						} else {
+							alert(response.message);
+						}
+					},
+					error: function () {
+						alert("Có lỗi xảy ra, vui lòng thử lại!");
+					}
+				});
+			});
+		});
 	</script>
 }

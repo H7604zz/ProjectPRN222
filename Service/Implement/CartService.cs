@@ -18,23 +18,6 @@ namespace ProjectPrn222.Service.Implement
 			_context.SaveChanges();	
 		}
 
-		public void DeleteCart(Cart cart)
-		{
-			_context.Carts.Remove(cart);
-			_context.SaveChanges();
-		}
-
-		public Cart? GetCartById(int id)
-		{
-			return _context.Carts.FirstOrDefault(c => c.CartId == id);	
-		}
-
-		public void UpdateCart(Cart cart)
-		{
-			_context.Carts.Update(cart);
-			_context.SaveChanges();
-		}
-
 		public IQueryable<CartViewModel> GetCartsOfCustomer(string userId)
 		{
 			return _context.Carts.Select(c => new CartViewModel{
@@ -59,6 +42,20 @@ namespace ProjectPrn222.Service.Implement
 				cartItem.QuantityInCart = quantity;
 			    _context.SaveChanges();
 			}
+		}
+
+		public bool RemoveCartItem(string? userId, int productId)
+		{
+			var cartItem = _context.Carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+
+			if (cartItem != null)
+			{
+				_context.Carts.Remove(cartItem);
+				_context.SaveChanges();
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

@@ -78,7 +78,25 @@ namespace ProjectPrn222.Controllers
 			return Json(new { success = true });
 		}
 
+		[HttpPost]
+		public IActionResult RemoveFromCart(int productId)
+		{
+			if (!User.Identity.IsAuthenticated)
+			{
+				return RedirectToAction("Login", "Auth");
+			}
 
+			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+			var success = _cartService.RemoveCartItem(userId, productId);
+
+			if (success)
+			{
+				return Json(new { success = true });
+			}
+
+			return Json(new { success = false, message = "Không thể xóa sản phẩm." });
+		}
 		public IActionResult AddToCart(int productId, int quantity = 1)
         {
             //kiểm tra đã đăng nhập chưa
