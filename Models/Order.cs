@@ -15,7 +15,7 @@ public partial class Order
 
     public int Status { get; set; }
 
-    public int PaymentMethod { get; set; }
+    public string PaymentMethod { get; set; }
 
     public string? Notes { get; set; }
 
@@ -28,8 +28,6 @@ public partial class Order
     public float FinalTotal { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
-
-    public virtual PaymentMethod PaymentMethodNavigation { get; set; } = null!;
 
     public virtual ApplicationUser User { get; set; } = null!;
 

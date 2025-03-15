@@ -25,8 +25,6 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
-    public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
-
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductPrice> ProductPrices { get; set; }
