@@ -50,5 +50,15 @@ namespace ProjectPrn222.Service.Implement
 		{
 			return _context.Carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
 		}
+		public void UpdateCartQuantity(string userId, int productId, int quantity)
+		{
+			var cartItem =  _context.Carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+				
+			if (cartItem != null)
+			{
+				cartItem.QuantityInCart = quantity;
+			    _context.SaveChanges();
+			}
+		}
 	}
 }

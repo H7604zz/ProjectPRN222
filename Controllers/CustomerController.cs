@@ -64,7 +64,8 @@ namespace ProjectPrn222.Controllers
 
 			if (existingCartItem != null)
             {
-                existingCartItem.QuantityInCart += quantity;
+
+                _cartService.UpdateCartQuantity(userId, productId, quantity + existingCartItem.QuantityInCart);
             }
             //thêm mới sản phẩm vào giỏ hàng
             else
