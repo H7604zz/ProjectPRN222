@@ -10,5 +10,6 @@ namespace ProjectPrn222.Service.Iterface
 		void DeleteCart(Cart cart);
 		Cart? GetCartById(int id);
 		IQueryable<CartViewModel> GetCartsOfCustomer(string userId);
+		Cart? HasProductIncart(string userId, int productId);
 	}
 }

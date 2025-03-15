@@ -48,13 +48,37 @@ namespace ProjectPrn222.Controllers
 			return View(listCart);
         }
 
-        public IActionResult AddToCart()
+        public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
         {
             //kiểm tra đã đăng nhập chưa
             //nếu chưa thì chuyển đến trang login
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Auth");
+			}
 
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
-            return RedirectToAction("Index", "Home");
+            //kiểm tra xem sản phẩm đã có trong giỏ hàng hay chưa
+            var existingCartItem = _cartService.HasProductIncart(userId, productId);
+
+			if (existingCartItem != null)
+            {
+                existingCartItem.QuantityInCart += quantity;
+            }
+            //thêm mới sản phẩm vào giỏ hàng
+            else
+            {
+                var cartItem = new Cart
+                {
+                    UserId = userId,
+                    ProductId = productId,
+                    QuantityInCart = quantity
+                };
+                _cartService.AddCart(cartItem);
+            }
+
+			return RedirectToAction("Index", "Home");
         }
     }
 }

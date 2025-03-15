@@ -46,5 +46,9 @@ namespace ProjectPrn222.Service.Implement
 				Price = (float)(c.Product.ProductPrices.OrderByDescending(pp => pp.UpdateDate).FirstOrDefault().Price),
 			});
 		}
+		public Cart? HasProductIncart(string userId, int productId)
+		{
+			return _context.Carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+		}
 	}
 }

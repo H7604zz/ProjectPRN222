@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ProjectPrn222.Models.DTO.ProductViewModel>
 @{
-    ViewData["Title"] = "Trang chủ";
+	ViewData["Title"] = "Trang chủ";
 }
 
 <body>
@@ -19,8 +19,8 @@
 						<p class="subtitle">Fresh & Organic</p>
 						<h1>Delicious Seasonal Fruits</h1>
 						<div class="hero-btns">
-							<a asp-controller="Home" asp-action="ListProduct" class="boxed-btn">Fruit Collection</a>
-							<a asp-controller="Home" asp-action="Contact" class="bordered-btn">Contact Us</a>
+							<a asp-controller="Home" asp-action="ListProduct" class="boxed-btn">Sản phẩm đang bán</a>
+							<a asp-controller="Home" asp-action="Contact" class="bordered-btn">Liên hệ</a>
 						</div>
 					</div>
 				</div>
@@ -95,7 +95,7 @@
 							<p class="product-price">
 								@($"{item.Price:N0} VNĐ")
 							</p>
-							<a href="cart.html" class="cart-btn"><i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng</a>
+							<a asp-controller="Customer" asp-action="AddToCart" asp-route-productId="@item.ProductId" class="cart-btn"><i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng</a>
 						</div>
 					</div>
 				}
