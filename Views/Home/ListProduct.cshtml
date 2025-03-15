@@ -59,8 +59,14 @@
                 {
                     <div class="col-lg-4 col-md-6 text-center">
                         <div class="single-product-item">
-                            <div class="product-image">
-                                <a asp-action="ProductDetails" asp-route-productid="@item.ProductId"><img src="@item.Image" alt=""></a>
+                            <div class="product-image position-relative">
+                                <a asp-action="ProductDetails" asp-route-productid="@item.ProductId">
+                                    <img src="@item.Image" alt="">
+                                </a>
+                                @if (item.Quanity == 0)
+                                {
+                                    <span class="sold-out-badge">Hết hàng</span>
+                                }
                             </div>
                             <h3>@item.ProductName</h3>
                             <p class="product-price">
