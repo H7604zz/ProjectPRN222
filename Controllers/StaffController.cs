@@ -184,6 +184,7 @@ namespace ProjectPrn222.Controllers
                         Quanity = model.Quanity,
                         CategoryId = model.CategoryId,
                         Description = model.Description,
+                        IsActive = model.IsActive,
                     };
                     int newProductId = _productService.AddProduct(product);
                     var productPrice = new ProductPrice
