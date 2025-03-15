@@ -38,10 +38,15 @@
 								{
 									<tr class="table-body-row">
 										<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-										<td class="ratio ratio-1x1" style="width: 100px; margin: 0 auto;"><img src="@item.ProductImage" alt=""></td>
+										<td>
+											<a asp-controller="Home" asp-action="ProductDetails" asp-route-productid="@item.ProductId">
+												<img class="ratio ratio-1x1" style="width: 100px; margin: 0 auto;" src="@item.ProductImage" alt=""></a>
+										</td>
 										<td class="product-name">@item.ProductName</td>
 										<td class="product-price">@($"{item.Price:N0}")</td>
-										<td class="product-quantity"><input type="number" placeholder="0" value="@item.QuantityInCart"></td>
+										<td class="product-quantity">
+											<input type="number" class="quantity-input" data-productid="@item.ProductId" value="@item.QuantityInCart" min="1">
+										</td>
 										<td class="product-total">@item.TotalPrice</td>
 									</tr>
 									//tính chi phí tạm tính
@@ -77,7 +82,7 @@
 							</tbody>
 						</table>
 						<div class="cart-buttons">
-							<a asp-action="Cart" class="boxed-btn">Làm mới giỏ hàng</a>
+							<a id="update-cart" class="boxed-btn">Cập nhật giỏ hàng</a>
 							<a asp-action="CheckOut" class="boxed-btn black">Thanh toán</a>
 						</div>
 					</div>
@@ -101,7 +106,44 @@
 
 
 @section Scripts {
-    <script>
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		$(document).ready(function () {
+			$("#update-cart").click(function (e) {
+				e.preventDefault();
+
+				let updatedCart = [];
+				$(".quantity-input").each(function () {
+					let productId = $(this).data("productid");
+					let quantity = parseInt($(this).val(), 10);
+
+					if (quantity > 0) {
+						updatedCart.push({
+							ProductId: productId,
+							QuantityInCart: quantity
+						});
+					}
+				});
+
+				$.ajax({
+					url: '@Url.Action("UpdateCart", "Customer")',
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(updatedCart),
+					success: function (response) {
+						if (response.success) {
+							location.reload();
+						} else {
+							alert(response.message || "Có lỗi xảy ra, vui lòng thử lại!");
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+						alert("Có lỗi xảy ra, vui lòng thử lại!");
+					}
+				});
+			});
+		});
 
 	</script>
 }
