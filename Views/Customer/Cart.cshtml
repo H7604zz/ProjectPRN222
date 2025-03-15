@@ -42,9 +42,12 @@
 												<i class="far fa-window-close"></i>
 											</a>
 										</td>
-										<td>
+										<td class="d-flex justify-content-center align-items-center">
 											<a asp-controller="Home" asp-action="ProductDetails" asp-route-productid="@item.ProductId">
-												<img class="ratio ratio-1x1" style="width: 100px; margin: 0 auto;" src="@item.ProductImage" alt=""></a>
+												<div class="product-img-wrapper">
+													<img class="img-fluid product-img" src="@item.ProductImage" alt="">
+												</div>
+											</a>
 										</td>
 										<td class="product-name">@item.ProductName</td>
 										<td class="product-price">@($"{item.Price:N0}")</td>
