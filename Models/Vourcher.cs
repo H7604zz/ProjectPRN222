@@ -15,9 +15,9 @@ public partial class Vourcher
 
     public DateOnly ExpiryDate { get; set; }
 
-    public decimal MinOrderValue { get; set; }
+    public float MinOrderValue { get; set; }
 
-    public decimal? MaxDiscountAmount { get; set; }
+    public float? MaxDiscountAmount { get; set; }
 
     public bool IsActive { get; set; }
 
