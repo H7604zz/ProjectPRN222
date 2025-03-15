@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,7 +14,8 @@ using System.Globalization;
 
 namespace ProjectPrn222.Controllers
 {
-    public class StaffController : Controller
+	[Authorize(Roles = "Staff")]
+	public class StaffController : Controller
     {
         public readonly ICategoryService _categoryService;
         public readonly IProductService _productService;

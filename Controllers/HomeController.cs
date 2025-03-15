@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
-using ProjectPrn222.Models;
 using ProjectPrn222.Service.Iterface;
-using System.Diagnostics;
 
 namespace ProjectPrn222.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
         private readonly IProductService _productService;
         private readonly int ITEM_PER_PAGE = 9;
@@ -98,5 +96,11 @@ namespace ProjectPrn222.Controllers
         {
             return View();
         }
-    }
+
+		[HttpGet]
+		public IActionResult PageNotFound()
+		{
+			return View();
+		}
+	}
 }

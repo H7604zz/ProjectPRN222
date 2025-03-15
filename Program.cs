@@ -43,6 +43,11 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 6;                  // Yêu cầu mật khẩu có độ dài tối thiểu là 6 ký tự
 });
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.AccessDeniedPath = "/Home/PageNotFound";
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

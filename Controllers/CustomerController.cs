@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,7 +14,8 @@ using ProjectPrn222.Service.Iterface;
 
 namespace ProjectPrn222.Controllers
 {
-    public class CustomerController : Controller
+	[Authorize(Roles = "Customer")]
+	public class CustomerController : Controller
     {
         private readonly IUserService _userService;
         private readonly ICartService _cartService;
