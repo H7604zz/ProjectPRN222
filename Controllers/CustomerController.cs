@@ -117,12 +117,6 @@ namespace ProjectPrn222.Controllers
 
 			int productQuantityInStock = product.Quanity;
 
-
-			if (quantity > productQuantityInStock)
-            {
-                ModelState.AddModelError("", $"Số lượng trong giỏ hàng không được vượt quá {productQuantityInStock}");
-            }
-
 			// Kiểm tra xem sản phẩm đã có trong giỏ hàng hay chưa
 			var existingCartItem = _cartService.HasProductIncart(userId, productId);
 			int currentCartQuantity = existingCartItem?.QuantityInCart ?? 0; // Số lượng hiện có trong giỏ
