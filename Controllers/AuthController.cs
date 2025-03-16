@@ -31,10 +31,23 @@ namespace ProjectPrn222.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                TempData["Error"] = "Tài khoản không tồn tại.";
+                return View();
+            }
+            // Kiểm tra xem email đã được xác nhận chưa
+            if (!user.EmailConfirmed)
+            {
+                TempData["Error"] = "Email của bạn chưa được xác nhận. Vui lòng kiểm tra email để xác nhận tài khoản.";
+                return View();
+            }
+
             var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(username);
                 if (user != null)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
