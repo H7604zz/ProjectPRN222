@@ -5,7 +5,7 @@ using ProjectPrn222.Service.Iterface;
 
 namespace ProjectPrn222.Controllers
 {
-	public class HomeController : Controller
+    public class HomeController : Controller
     {
         private readonly IProductService _productService;
         private readonly int ITEM_PER_PAGE = 9;

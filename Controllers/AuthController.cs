@@ -44,10 +44,10 @@ namespace ProjectPrn222.Controllers
                         return RedirectToAction("ManageUser", "Admin");
                     }
                     //chuyển đến trang Staff
-                    //if (roles.Contains("Staff"))
-                    //{
-                    //    return RedirectToAction("", "Staff");
-                    //}
+                    if (roles.Contains("Staff"))
+                    {
+                        return RedirectToAction("ManageProduct", "Staff");
+                    }
                 }
                 return RedirectToAction("Index", "Home"); 
             }
