@@ -357,7 +357,7 @@ namespace ProjectPrn222.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existingVoucher = _vourcherService.GetVourcher(model.Code);
+                var existingVoucher = _vourcherService.GetVourcherByCode(model.Code);
                 if (existingVoucher != null)
                 {
                     ModelState.AddModelError("Code", "Mã giảm giá đã tồn tại.");
@@ -375,6 +375,42 @@ namespace ProjectPrn222.Controllers
             ViewBag.max = model.MaxDiscountAmount;
 
             return PartialView("_CreateVourcherModal", model);
+        }
+
+        [HttpGet]
+        public IActionResult EditVourcher(string code)
+        {
+            var vourcher = _vourcherService.GetVourcherByCode(code);
+            if (vourcher == null)
+            {
+                return NotFound();
+            }
+            return PartialView("_EditVourcherModal", vourcher);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditVourcher(Vourcher model)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingVoucher = _vourcherService.GetVourcherByCode(model.Code);
+                if (existingVoucher != null)
+                {
+                    ModelState.AddModelError("Code", "Mã giảm giá đã tồn tại.");
+                }
+                else
+                {
+                    _vourcherService.UpdateVourcher(model);
+                    TempData["Success"] = "Tạo mã giảm giá thành công";
+                    return Json(new { success = true });
+                }
+            }
+            ViewBag.code = model.Code;
+            ViewBag.expiryDate = model.ExpiryDate;
+            ViewBag.min = model.MinOrderValue;
+            ViewBag.max = model.MaxDiscountAmount;
+
+            return PartialView("_EditVourcherModal", model);
         }
     }
 }

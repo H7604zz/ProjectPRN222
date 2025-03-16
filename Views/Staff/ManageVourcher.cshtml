@@ -71,7 +71,7 @@
                                 }
                             </td>
                             <td class="text-center">
-                                <a asp-controller="Staff" asp-action="EditCate" asp-route-id="@item.VourcherId" class="btn btn-primary btn-edit">
+                                <a asp-controller="Staff" asp-action="EditVourcher" asp-route-code="@item.Code" class="btn btn-primary btn-edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                             </td>
@@ -112,6 +112,21 @@
     </div>
 </div>
 
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Chỉnh sửa mã giảm giá</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Nội dung sẽ được load bằng AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -123,6 +138,16 @@
         $('#createModal').on('show.bs.modal', function (e) {
             $.get('@Url.Action("CreateVourcher", "Staff")', function (data) {
                 $('#createModalBody').html(data);
+            });
+        });
+
+        // Load Edit Modal
+        $(document).on('click', '.btn-edit', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href'); // Lấy URL từ thuộc tính href của nút chỉnh sửa
+            $.get(url, function (data) {
+                $('#editModalBody').html(data); // Đổ dữ liệu vào modal
+                $('#editModal').modal('show'); // Hiển thị modal
             });
         });
 

@@ -27,6 +27,11 @@ namespace ProjectPrn222.Service.Implement
 			return _context.Vourchers.FirstOrDefault(v => v.Code == code && v.IsActive);
 		}
 
+        public Vourcher? GetVourcherByCode(string code)
+        {
+            return _context.Vourchers.FirstOrDefault(v => v.Code == code);
+        }
+
         public IQueryable<Vourcher> SearchVourcher(string keyword)
         {
 			return _context.Vourchers.Where(v => v.Code.Contains(keyword));
