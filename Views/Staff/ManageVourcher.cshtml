@@ -1,0 +1,108 @@
+﻿@model IEnumerable<ProjectPrn222.Models.Vourcher>
+
+@{
+    ViewData["Title"] = "Danh sách mã giảm giá";
+}
+
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
+    <div class="row">
+        <!-- Main Content -->
+        <div class="container my-5">
+            <!-- Add Create Button -->
+            <div class="mb-3">
+                <a type="button" class="btn btn-success" asp-action="">
+                    <i class="bi bi-plus"></i> Tạo mã giảm giá
+                </a>
+            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="container my-5">
+                <form asp-action="ManageVourcher" method="get" class="row g-3 align-items-center justify-content-center">
+                    <!-- Search Input -->
+                    <div class="col-md-4">
+                        <div class="input-group shadow-sm">
+                            <input type="text" class="form-control" name="keyword"
+                                   placeholder="Tìm kiếm mã giảm giá" value="@ViewBag.keyword" />
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> Tìm kiếm
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Mã giảm giá</th>
+                        <th class="text-center">Mức giảm giá</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Ngày hết hạn</th>
+                        <th class="text-center">Mức tối thiểu</th>
+                        <th class="text-center">Giảm tối đa</th>
+                        <th class="text-center">Hoạt động</th>
+                        <th class="text-center">Chỉnh sửa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Code</td>
+                            <td>@item.Discount</td>
+                            <td>@item.CreatedAt.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                            <td>@item.ExpiryDate.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                            <td>@item.MinOrderValue</td>
+                            <td>@item.MaxDiscountAmount</td>
+                            <td class="text-center">
+                                @if (item.IsActive == true)
+                                {
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-controller="Staff" asp-action="EditCate" asp-route-id="@item.VourcherId" class="btn btn-primary btn-edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @* phân trang *@
+    @{
+        var paggingModel = new ProjectPrn222.Helpers.PaggingModel()
+            {
+                CurrentPage = ViewBag.CurrentPage,
+                CountPage = ViewBag.CountPage,
+                GenerateUrl = (int? page) => Url.Action("ManageVourcher", new { currentPage = page })
+            };
+    }
+
+    <div class="col-lg-12 d-flex justify-content-center">
+        <partial name="_Pagging" model="@paggingModel" />
+    </div>
+</body>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Ẩn loader khi trang đã load xong
+            $(".loader").fadeOut("slow");
+        });
+
+    </script>
+}

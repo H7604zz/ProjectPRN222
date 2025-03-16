@@ -19,16 +19,19 @@ namespace ProjectPrn222.Controllers
     {
         public readonly ICategoryService _categoryService;
         public readonly IProductService _productService;
+        public readonly IVourcherService _vourcherService;
         public readonly ICloudinaryService _cloudinaryService;
 
         private readonly int ITEM_PER_PAGE = 10;
         private int totalPage;
         public StaffController(ICategoryService categoryService,
                                 IProductService productService,
+                                IVourcherService vocherService,
                                 ICloudinaryService cloudinaryService)
         {
             _categoryService = categoryService;
             _productService = productService;
+            _vourcherService = vocherService;
             _cloudinaryService = cloudinaryService;
         }
         public IActionResult ListCategories(string? keyword)
@@ -313,5 +316,34 @@ namespace ProjectPrn222.Controllers
                 return Json(new { success = true }); ;
             }
         }
+
+        public IActionResult ManageVourcher(string? keyword, int currentPage = 1)
+        {
+            // Bắt đầu từ truy vấn tìm kiếm nếu có keyword, ngược lại lấy tất cả sản phẩm
+            var vourcherListQuery = !string.IsNullOrEmpty(keyword)
+                ? _vourcherService.SearchVourcher(keyword)
+                : _vourcherService.GetAllVourchers();
+
+            int totalProduct = vourcherListQuery.Count(); // Tổng số sản phẩm sau khi lọc
+            int totalPage = (int)Math.Ceiling((double)totalProduct / ITEM_PER_PAGE); // Tổng số trang
+
+            // Đảm bảo currentPage trong khoảng hợp lệ
+            currentPage = Math.Max(1, Math.Min(currentPage, totalPage));
+
+            // Truyền dữ liệu cho ViewBag
+            ViewBag.keyword = keyword;
+            ViewBag.CurrentPage = currentPage;
+            ViewBag.CountPage = totalPage;
+
+            // Phân trang
+            var pagedVourcher = vourcherListQuery
+                .OrderBy(v => v.IsActive)
+                .Skip((currentPage - 1) * ITEM_PER_PAGE)
+                .Take(ITEM_PER_PAGE)
+                .ToList();
+
+            return View(pagedVourcher);
+        }
+
     }
 }
