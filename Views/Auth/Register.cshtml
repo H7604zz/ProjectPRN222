@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="form-floating mb-2">
-                    <input asp-for="Email" type="email" class="form-control" placeholder="Email@example.com"/>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Email@example.com" value="@ViewBag.email" />
                     <label asp-for="Email">Email</label>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="form-floating mb-2">
-                    <input asp-for="ConfirmPassword" type="password" class="form-control" value="@ViewBag.password" placeholder="Confirm Password" />
+                    <input asp-for="ConfirmPassword" type="password" class="form-control" value="@ViewBag.confirmpassword" placeholder="Confirm Password" />
                     <label asp-for="ConfirmPassword">Xác nhận mật khẩu</label>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
