@@ -1,8 +1,15 @@
 ﻿@model IEnumerable<ProjectPrn222.Models.DTO.CartViewModel>
+@using Microsoft.AspNetCore.Http
 
 @{
 	ViewData["Title"] = "Giỏ hàng";
 }
+
+@{
+	var voucherCode = Context.Session.GetString("VoucherCode");
+	var discountAmount = Context.Session.GetInt32("DiscountAmount") ?? 0;
+}
+
 
 <body>
     <!--PreLoader-->
@@ -74,11 +81,11 @@
 								</tr>
 								<tr class="total-data">
 									<td><strong>Giảm giá: </strong></td>
-									<td>@($"{ViewBag.DiscountAmount ?? 0:N0} VNĐ")</td>
+									<td>@($"{discountAmount:N0} VNĐ")</td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Tổng cộng: </strong></td>
-									<td>@($"{(ViewBag.subtotal - (ViewBag.DiscountAmount ?? 0)):N0} VNĐ")</td>
+									<td>@($"{(ViewBag.subtotal - discountAmount):N0} VNĐ")</td>
 								</tr>
 							</tbody>
 						</table>
@@ -92,7 +99,7 @@
 						<h3>Áp dụng mã giảm giá</h3>
 						<div class="coupon-form-wrap">
 							<form id="voucherForm">
-								<p><input type="text" placeholder="Mã giảm giá">@ViewBag.VoucherCode</p>
+								<p><input type="text" placeholder="Mã giảm giá" value="@voucherCode"></p>
 								<p><input type="submit" value="Áp dụng"></p>
 							</form>
 						</div>
