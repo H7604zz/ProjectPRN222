@@ -11,7 +11,7 @@
             <form asp-action="Login" method="post">
                 @Html.AntiForgeryToken()
 
-                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                <h1 class="h3 mb-3 fw-normal d-flex justify-content-center">Đăng nhập</h1>
 
                 <div class="form-floating mb-2">
                     <input asp-for="UserName" class="form-control" placeholder="Tên đăng nhập"/>
@@ -26,7 +26,14 @@
                 </div>
 
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Đăng nhập</button>
-                <a asp-controller="Auth" asp-action="Register" class="w-100 btn btn-lg btn-secondary mt-2">Đăng ký</a>
+
+                <div class="d-flex justify-content-end mt-2">
+                    <a asp-controller="Auth" asp-action="ForgotPassword" class="text-decoration-none">Quên mật khẩu?</a>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a asp-controller="Auth" asp-action="Register" class="text-decoration-none">Tạo tài khoản →</a>
+                </div>
             </form>
         </div>
     </div>
