@@ -81,6 +81,7 @@ namespace ProjectPrn222.Controllers
                     {
                         UserName = model.UserName,
                         Email = model.Email,
+                        EmailConfirmed = true
                     };
 
                     var result = await _userManager.CreateAsync(user, model.Password);
