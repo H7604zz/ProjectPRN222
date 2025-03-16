@@ -1,0 +1,36 @@
+﻿@model ProjectPrn222.Models.Vourcher
+
+<form asp-action="CreateVourcher" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label class="form-label">Mã giảm giá</label>
+        <input asp-for="Code" class="form-control" value="@ViewBag.code" required />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Ngày hết hạn</label>
+        <input asp-for="ExpiryDate" type="date" class="form-control" required />
+        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mức tối thiểu</label>
+        <input asp-for="MinOrderValue" class="form-control" value="@ViewBag.min" required />
+        <span asp-validation-for="MinOrderValue" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Giảm tối đa</label>
+        <input asp-for="MaxDiscountAmount" class="form-control" value="@ViewBag.max"/>
+        <span asp-validation-for="MaxDiscountAmount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Chọn trạng thái</label>
+        <select asp-for="IsActive" class="form-control">
+            <option value="true">Hoạt động</option>
+            <option value="false">Ngừng hoạt động</option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-primary">Tạo</button>
+    </div>
+</form>

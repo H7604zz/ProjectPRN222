@@ -337,7 +337,7 @@ namespace ProjectPrn222.Controllers
 
             // Phân trang
             var pagedVourcher = vourcherListQuery
-                .OrderBy(v => v.IsActive)
+                .OrderByDescending(v => v.IsActive)
                 .Skip((currentPage - 1) * ITEM_PER_PAGE)
                 .Take(ITEM_PER_PAGE)
                 .ToList();
@@ -345,5 +345,36 @@ namespace ProjectPrn222.Controllers
             return View(pagedVourcher);
         }
 
+
+        [HttpGet]
+        public IActionResult CreateVourcher()
+        {
+            return PartialView("_CreateVourcherModal");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateVourcher(Vourcher model)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingVoucher = _vourcherService.GetVourcher(model.Code);
+                if (existingVoucher != null)
+                {
+                    ModelState.AddModelError("Code", "Mã giảm giá đã tồn tại.");
+                }
+                else
+                {
+                    _vourcherService.AddVourcher(model);
+                    TempData["Success"] = "Tạo mã giảm giá thành công";
+                    return Json(new { success = true });
+                }
+            }
+            ViewBag.code = model.Code;
+            ViewBag.expiryDate = model.ExpiryDate;
+            ViewBag.min = model.MinOrderValue;
+            ViewBag.max = model.MaxDiscountAmount;
+
+            return PartialView("_CreateVourcherModal", model);
+        }
     }
 }
