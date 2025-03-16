@@ -154,5 +154,58 @@ namespace ProjectPrn222.Controllers
             return RedirectToAction("Login", "Auth");
         }
 
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword([FromForm]string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                TempData["Error"] = "Email không tồn tại.";
+                return View();
+            }
+
+            // Tạo mật khẩu mới (Random bằng GUID, chỉ dùng nếu người dùng xác nhận)
+            var newPassword = Guid.NewGuid().ToString("N").Substring(0, 8);
+
+            // Tạo token để xác nhận đổi mật khẩu
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var confirmLink = Url.Action("ConfirmResetPassword", "Auth", new { email, token, newPassword }, Request.Scheme);
+
+            // Gửi email xác nhận đổi mật khẩu
+            var emailSubject = "Xác nhận đặt lại mật khẩu";
+            var emailBody = $"Chúng tôi nhận được yêu cầu đặt lại mật khẩu của bạn.<br>" +
+                            $"Mật khẩu mới của bạn là: <b>{newPassword}</b> (Chưa được cập nhật).<br>" +
+                            $"Vui lòng bấm vào link sau để xác nhận: <a href='{confirmLink}'>Xác nhận đổi mật khẩu</a>";
+
+            await _emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
+
+            TempData["Success"] = "Vui lòng kiểm tra email để xác nhận đổi mật khẩu.";
+            return RedirectToAction("Login", "Auth");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmResetPassword(string email, string token, string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return BadRequest("Email không hợp lệ.");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "Mật khẩu đã được cập nhật thành công. Bạn có thể đăng nhập ngay bây giờ.";
+                return RedirectToAction("Login", "Auth");
+            }
+
+            TempData["Error"] = "Đặt lại mật khẩu thất bại. Vui lòng thử lại.";
+            return RedirectToAction("Login", "Auth");
+        }
     }
 }
