@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using ProjectPrn222.Models;
 using ProjectPrn222.Service.Iterface;
 using ProjectPrn222.Service.Implement;
+using ProjectPrn222.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//them dich vu SignalR
+builder.Services.AddSignalR();
 
 //DI
 builder.Services.AddScoped<IUserService, UserService>();
@@ -123,5 +127,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
+//dinh nghia endPoint cho SignalR
+app.MapHub<HubService>("/hubservice");
 app.Run();
