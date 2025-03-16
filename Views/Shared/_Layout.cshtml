@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ProjectPrn222</title>
-   
+
     <!-- fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" asp-append-version="true">
     <!-- bootstrap -->
@@ -48,18 +48,26 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Contact">Liên hệ</a>
                         </li>
-                        @if (User.IsInRole("Staff"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Staff" asp-action="ListCategories">Quản lý danh mục</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Staff" asp-action="ManageProduct">Quản lý sản phẩm</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Staff" asp-action="ManageVourcher">Quản lý mã giảm giá</a>
-                            </li>
-                        }
+                        <div class="dropdown">
+                            @if (User.IsInRole("Staff"))
+                            {
+                                <button class="dropdown-toggle custom-dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Quản lý
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Staff" asp-action="ListCategories">Quản lý danh mục</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Staff" asp-action="ManageProduct">Quản lý sản phẩm</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Staff" asp-action="ManageVourcher">Quản lý mã giảm giá</a>
+                                    </li>
+                                </ul>
+                            }
+                        </div>
+
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
@@ -98,7 +106,7 @@
                     </ul>
 
                 </div>
-                
+
             </div>
         </nav>
     </header>
