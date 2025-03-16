@@ -70,6 +70,7 @@ namespace ProjectPrn222.Controllers
 
 			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
+			float subtotal = 0f;
 			foreach (var item in updatedCart)
 			{
 				//check số lượng tối đa của mỗi sản phẩm
@@ -80,6 +81,29 @@ namespace ProjectPrn222.Controllers
 					item.QuantityInCart = quantityInStock; //cập nhật thành số lượng tối đa
 				}
 				_cartService.UpdateCartQuantity(userId, item.ProductId, item.QuantityInCart);
+				subtotal += item.QuantityInCart * (float)product.Price;
+			}
+
+			// Kiểm tra xem có VoucherCode không
+			var voucherCode = HttpContext.Session.GetString("VoucherCode");
+			if (!string.IsNullOrEmpty(voucherCode))
+			{
+				var voucher = _vourcherService.GetVourcher(voucherCode);
+				if (voucher != null && subtotal >= voucher.MinOrderValue)
+				{
+					float discountAmount = subtotal * voucher.Discount / 100;
+					if (voucher.MaxDiscountAmount.HasValue && discountAmount > voucher.MaxDiscountAmount.Value)
+					{
+						discountAmount = voucher.MaxDiscountAmount.Value;
+					}
+					HttpContext.Session.SetInt32("DiscountAmount", (int)discountAmount);
+				}
+				else
+				{
+					// Nếu không thỏa điều kiện giảm giá, xóa session giảm giá
+					HttpContext.Session.Remove("VoucherCode");
+					HttpContext.Session.Remove("DiscountAmount");
+				}
 			}
 
 			return Json(new { success = true });
