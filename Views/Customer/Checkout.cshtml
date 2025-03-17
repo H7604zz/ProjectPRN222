@@ -2,6 +2,11 @@
 	ViewData["Title"] = "Thanh toán";
 }
 
+@{
+	var discountAmount = Context.Session.GetInt32("DiscountAmount") ?? 0;
+	var totalAmount = Context.Session.GetInt32("TotalAmount") ?? 0;
+}
+
 <body>
 	<!--PreLoader-->
 	<div class="loader">
@@ -32,40 +37,27 @@
 						<table class="order-details">
 							<thead>
 								<tr>
-									<th>Chi tiết đơn hàng</th>
+									<th>Thông tin</th>
 									<th>Giá</th>
 								</tr>
 							</thead>
-							<tbody class="order-details-body">
-								<tr>
-									<td>Strawberry</td>
-									<td>$85.00</td>
-								</tr>
-								<tr>
-									<td>Berry</td>
-									<td>$70.00</td>
-								</tr>
-								<tr>
-									<td>Lemon</td>
-									<td>$35.00</td>
-								</tr>
-							</tbody>
 							<tbody class="checkout-details">
 								<tr>
 									<td>Tạm tính</td>
-									<td>$190</td>
+									<td>@($"{totalAmount:N0} VNĐ")</td>
 								</tr>
 								<tr>
 									<td>Phí vận chuyển</td>
-									<td>$50</td>
+									<td>@($"{ViewBag.ship:N0} VNĐ")</td>
 								</tr>
 								<tr>
 									<td>Tổng cộng</td>
-									<td>$240</td>
+									<td>@($"{(totalAmount + ViewBag.ship):N0} VNĐ")</td>
 								</tr>
 							</tbody>
 						</table>
-						<a href="#" class="boxed-btn">Đặt hàng</a>
+						<a asp-action="PaymentWithVnPay" class="boxed-btn">Đặt hàng</a>
+						<a asp-action="Cart" class="boxed-btn ms-2">Quay lại giỏ hàng</a>
 					</div>
 				</div>
 			</div>

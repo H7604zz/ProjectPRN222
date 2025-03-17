@@ -55,7 +55,8 @@ namespace ProjectPrn222.Controllers
 			{
 				subtotal += cart.QuantityInCart * cart.Price;
 			}
-			ViewBag.subtotal = subtotal;
+			//ViewBag.subtotal = subtotal;
+			HttpContext.Session.SetInt32("SubTotal", (int)(subtotal));
 
 			return View(listCart);
         }
@@ -181,12 +182,6 @@ namespace ProjectPrn222.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-		public IActionResult Checkout()
-		{
-
-			return View();
-		}
-
 		[HttpPost]
 		public IActionResult ApplyVoucher(string voucherCode)
 		{
@@ -239,5 +234,18 @@ namespace ProjectPrn222.Controllers
 			return Json(new { success = true, discountAmount = discountAmount, message = "Mã giảm giá đã được áp dụng!" });
 		}
 
+		public IActionResult Checkout()
+		{
+			ViewBag.ship = 30000; // tiền ship
+			var subtotal = HttpContext.Session.GetInt32("SubTotal") ?? 0; //số tiền tạm tính
+			var discountAmount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0; //số tiền giảm từ vourcher
+			HttpContext.Session.SetInt32("TotalAmount", (int)(subtotal - discountAmount));
+			return View();
+		}
+
+		public IActionResult PaymentWithVnPay()
+		{
+			return View();
+		}
 	}
 }
