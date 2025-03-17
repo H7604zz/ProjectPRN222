@@ -51,6 +51,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+	options.LoginPath = "/Auth/Login";
 	options.AccessDeniedPath = "/Home/PageNotFound";
 });
 

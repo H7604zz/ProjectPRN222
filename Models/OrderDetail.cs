@@ -13,12 +13,6 @@ public partial class OrderDetail
 
     public int Quantity { get; set; }
 
-    public float Price { get; set; }
-
-    public float Discount { get; set; }
-
-    public float Subtotal { get; set; }
-
     public virtual Order Order { get; set; } = null!;
 
     public virtual Product Product { get; set; } = null!;
