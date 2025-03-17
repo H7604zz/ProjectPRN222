@@ -56,8 +56,15 @@
 								</tr>
 							</tbody>
 						</table>
-						<a asp-action="PaymentWithVnPay" class="boxed-btn">Đặt hàng</a>
-						<a asp-action="Cart" class="boxed-btn ms-2">Quay lại giỏ hàng</a>
+						<form method="post" asp-action="CreatePaymentUrlVnpay" asp-controller="Payment">
+							<input type="hidden" name="Name" value="@User.Identity.Name" />
+							<input type="hidden" name="Amount" value="@(totalAmount + ViewBag.ship)" />
+							<input type="hidden" name="OrderDescription" value="Thanh toán đơn hàng qua VNPay" />
+							<input type="hidden" name="OrderType" value="other" />
+
+                            <button type="submit" class="boxed-btn">Đặt hàng</button>
+							<a asp-action="Cart" class="boxed-btn ms-2">Quay lại giỏ hàng</a>
+						</form>
 					</div>
 				</div>
 			</div>
