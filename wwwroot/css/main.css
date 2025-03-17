@@ -400,15 +400,7 @@ p:last-child {
 
 .blue-bg {
   background-color: #162133;
-}
-
-a.boxed-btn {
-  font-family: 'Poppins', sans-serif;
-  display: inline-block;
-  background-color: #F28123;
-  color: #fff;
-  padding: 10px 20px;
-}
+}.boxed-btn {    font-family: 'Poppins', sans-serif;    display: inline-block;    background-color: #F28123;    color: #fff;    padding: 10px 20px;    border-radius: 50px;}a.boxed-btn {    font-family: 'Poppins', sans-serif;    display: inline-block;    background-color: #F28123;    color: #fff;    padding: 10px 20px;}
 
 a.bordered-btn {
   font-family: 'Poppins', sans-serif;
@@ -993,7 +985,7 @@ a.navbar-brand {
 
 a.navbar-brand:hover {
   opacity: 0.7;
-}
+}.boxed-btn {    transition: 0.3s;}.boxed-btn:hover {    background-color: #051922;    color: #F28123;}
 
 a.boxed-btn {
   -webkit-transition: 0.3s;

@@ -21,18 +21,21 @@ namespace ProjectPrn222.Controllers
         private readonly ICartService _cartService;
         private readonly IProductService _productService;
         private readonly IVourcherService _vourcherService;
-        private readonly UserManager<ApplicationUser> _userManager;
+		private readonly IVnPayService _vnPayService;
+		private readonly UserManager<ApplicationUser> _userManager;
 
         public CustomerController(IUserService userService,
 								  ICartService cartService,
                                   IProductService productService,
 								  IVourcherService vocherService,
+								  IVnPayService vnPayService,
                                   UserManager<ApplicationUser> userManager)
         {
             _userService = userService;
             _cartService = cartService;
             _productService = productService;
 			_vourcherService = vocherService;
+			_vnPayService = vnPayService;
             _userManager = userManager;
         }
 
@@ -243,9 +246,9 @@ namespace ProjectPrn222.Controllers
 			return View();
 		}
 
-		public IActionResult PaymentWithVnPay()
-		{
-			return View();
-		}
+		//public IActionResult PaymentWithVnPay()
+		//{
+		//	return View();
+		//}
 	}
 }
