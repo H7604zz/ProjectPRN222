@@ -25,8 +25,7 @@ namespace ProjectPrn222.Controllers
 		public IActionResult PaymentCallbackVnpay()
 		{
 			var response = _vnPayService.PaymentExecute(Request.Query);
-
-			return Json(response);
+			return View("~/Views/Customer/PaymentCallbackVnpay.cshtml", response);
 		}
 
 	}
