@@ -10,5 +10,6 @@ namespace ProjectPrn222.Service.Iterface
 		Cart? HasProductIncart(string userId, int productId);
 		void UpdateCartQuantity(string userId, int productId, int quantity);
 		bool RemoveCartItem(string? userId, int productId);
+		void ClearCart(string userId);
 	}
 }

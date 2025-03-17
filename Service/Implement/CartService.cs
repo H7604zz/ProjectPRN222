@@ -57,5 +57,14 @@ namespace ProjectPrn222.Service.Implement
 
 			return false;
 		}
+		public void ClearCart(string userId)
+		{
+			var cartItems = _context.Carts.Where(c => c.UserId == userId).ToList();
+			if (cartItems.Any())
+			{
+				_context.Carts.RemoveRange(cartItems);
+				_context.SaveChanges();
+			}
+		}
 	}
 }
