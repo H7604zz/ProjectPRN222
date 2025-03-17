@@ -241,14 +241,16 @@ namespace ProjectPrn222.Controllers
 		{
 			ViewBag.ship = 30000; // tiền ship
 			var subtotal = HttpContext.Session.GetInt32("SubTotal") ?? 0; //số tiền tạm tính
+
+			if (subtotal <= 0)
+			{
+				TempData["Warning"] = "Bạn không có đơn hàng nào để thanh toán";
+				return View("Cart");
+			}
+
 			var discountAmount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0; //số tiền giảm từ vourcher
 			HttpContext.Session.SetInt32("TotalAmount", (int)(subtotal - discountAmount));
 			return View();
 		}
-
-		//public IActionResult PaymentWithVnPay()
-		//{
-		//	return View();
-		//}
 	}
 }
