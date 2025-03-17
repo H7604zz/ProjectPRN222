@@ -17,6 +17,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IVourcherService, VourcherService>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 //session
 builder.Services.AddSession(options =>
