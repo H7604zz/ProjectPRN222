@@ -245,7 +245,7 @@ namespace ProjectPrn222.Controllers
 			if (subtotal <= 0)
 			{
 				TempData["Warning"] = "Bạn không có đơn hàng nào để thanh toán";
-				return View("Cart");
+				return RedirectToAction("Cart");
 			}
 
 			var discountAmount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0; //số tiền giảm từ vourcher
