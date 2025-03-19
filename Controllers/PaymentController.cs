@@ -59,8 +59,9 @@ namespace ProjectPrn222.Controllers
 			_orderService.AddOrderDetails(orderDetails);
 			//xóa thông tin trong giỏ hàng
 			_cartService.ClearCart(userId);
-
-			return View("~/Views/Customer/PaymentCallbackVnpay.cshtml", response);
+            HttpContext.Session.Remove("VoucherCode");
+            HttpContext.Session.Remove("DiscountAmount");
+            return View("~/Views/Customer/PaymentCallbackVnpay.cshtml", response);
 		}
 
 	}
