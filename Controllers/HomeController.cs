@@ -53,6 +53,7 @@ namespace ProjectPrn222.Controllers
             ViewBag.keyword = keyword;
             ViewBag.CurrentPage = currentPage;
             ViewBag.CountPage = totalPage;
+            ViewBag.categoryId = categoryId;
 
             // Phân trang
             var pagedProduct = productListQuery

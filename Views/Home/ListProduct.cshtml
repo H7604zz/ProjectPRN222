@@ -85,7 +85,10 @@
             {
                 CurrentPage = ViewBag.CurrentPage,
                 CountPage = ViewBag.CountPage,
-                GenerateUrl = (int? page) => Url.Action("ListProduct", new { currentPage = page })
+                GenerateUrl = (int? page) => Url.Action("ListProduct", new {
+                    keyword = @ViewBag.keyword,
+                    currentPage = page, 
+                    categoryId = @ViewBag.categoryId})
             };
     }
 
