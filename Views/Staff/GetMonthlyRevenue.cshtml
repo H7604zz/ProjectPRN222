@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Thống kê";
+}
+
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
+    <h2>Thống kê doanh thu theo tháng</h2>
+    <canvas id="revenueChart"></canvas>
+
+</body>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/Staff/GetMonthlyRevenue') // Gọi API lấy dữ liệu doanh thu
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(item => `Tháng ${item.month}/${item.year}`);
+                    const revenues = data.map(item => item.revenue);
+
+                    var ctx = document.getElementById('revenueChart').getContext('2d');
+                    var revenueChart = new Chart(ctx, {
+                        // type: 'bar', //biểu đồ cột
+                        type: 'line', //biểu đồ đường
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Doanh thu (VNĐ)',
+                                data: revenues,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Lỗi khi lấy dữ liệu:', error));
+        });
+    </script>
+}

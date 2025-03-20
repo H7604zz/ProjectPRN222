@@ -21,18 +21,21 @@ namespace ProjectPrn222.Controllers
         public readonly IProductService _productService;
         public readonly IVourcherService _vourcherService;
         public readonly ICloudinaryService _cloudinaryService;
+        public readonly IOrderService _orderService;
 
         private readonly int ITEM_PER_PAGE = 10;
         private int totalPage;
         public StaffController(ICategoryService categoryService,
                                 IProductService productService,
                                 IVourcherService vocherService,
-                                ICloudinaryService cloudinaryService)
+                                ICloudinaryService cloudinaryService,
+                                IOrderService orderService)
         {
             _categoryService = categoryService;
             _productService = productService;
             _vourcherService = vocherService;
             _cloudinaryService = cloudinaryService;
+            _orderService = orderService;
         }
         public IActionResult ListCategories(string? keyword)
         {
@@ -411,6 +414,20 @@ namespace ProjectPrn222.Controllers
             ViewBag.max = model.MaxDiscountAmount;
 
             return PartialView("_EditVourcherModal", model);
+        }
+
+        public IActionResult GetMonthlyRevenue()
+        {
+            var data = _orderService.GetRevenueInMonth();
+            foreach (var item in data)
+            {
+                Console.WriteLine($"{item.Month} - {item.Revenue}");
+            }
+            return Json(data);
+        }
+        public IActionResult Statistics()
+        {
+            return View("GetMonthlyRevenue");
         }
     }
 }

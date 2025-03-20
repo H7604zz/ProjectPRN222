@@ -48,25 +48,33 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Contact">Liên hệ</a>
                         </li>
-                        <div class="dropdown">
-                            @if (User.IsInRole("Staff"))
-                            {
-                                <button class="dropdown-toggle custom-dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Quản lý
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-controller="Staff" asp-action="ListCategories">Quản lý danh mục</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-controller="Staff" asp-action="ManageProduct">Quản lý sản phẩm</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-controller="Staff" asp-action="ManageVourcher">Quản lý mã giảm giá</a>
-                                    </li>
-                                </ul>
-                            }
-                        </div>
+                        @if (User.IsInRole("Staff"))
+                        {
+                            <div class="d-flex align-items-center">
+                                <!-- Dropdown Quản lý -->
+                                <div class="dropdown me-3">
+                                    <button class="dropdown-toggle custom-dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Quản lý
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-controller="Staff" asp-action="ListCategories">Quản lý danh mục</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-controller="Staff" asp-action="ManageProduct">Quản lý sản phẩm</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-controller="Staff" asp-action="ManageVourcher">Quản lý mã giảm giá</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Nút Thống kê -->
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Staff" asp-action="Statistics">Thống kê</a>
+                                </li>
+                            </div>
+                        }
 
                         @if (User.IsInRole("Admin"))
                         {
