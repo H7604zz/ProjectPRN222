@@ -12,8 +12,10 @@
     <!--PreLoader Ends-->
 
     <h2>Thống kê doanh thu theo tháng</h2>
-    <canvas id="revenueChart"></canvas>
+    <div class="mx-4" style="height: 400px">
+        <canvas id="revenueChart"></canvas>
 
+    </div>
 </body>
 
 
@@ -42,10 +44,17 @@
                             }]
                         },
                         options: {
-                            responsive: true,
+                            responsive: true, // Đảm bảo biểu đồ responsive
+                            maintainAspectRatio: false, // Không giữ tỷ lệ khung hình cố định
                             scales: {
                                 y: {
                                     beginAtZero: true
+                                }
+                            },
+                            layout: {
+                                padding: {
+                                    left: 20,
+                                    right: 20
                                 }
                             }
                         }
