@@ -256,14 +256,32 @@ namespace ProjectPrn222.Controllers
 			return View();
 		}
 
-		public IActionResult HistoryPayment()
+		public IActionResult HistoryPayment(int currentPage = 1)
 		{
+			int ITEM_PER_PAGE = 5;
+
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
 			var history = _orderService.HistoryOrder(userId)
-				.OrderByDescending(x => x.OrderId)
+				.OrderByDescending(x => x.OrderId).ToList();
+
+
+			int totalRecord = history.Count();
+			int totalPage = (int)Math.Ceiling((double)totalRecord / ITEM_PER_PAGE);
+
+			// Đảm bảo currentPage trong khoảng hợp lệ
+			currentPage = Math.Max(1, Math.Min(currentPage, totalPage));
+
+			// Truyền dữ liệu cho ViewBag
+			ViewBag.CurrentPage = currentPage;
+			ViewBag.CountPage = totalPage;
+
+			// Phân trang
+			var pagedProduct = history
+				.Skip((currentPage - 1) * ITEM_PER_PAGE)
+				.Take(ITEM_PER_PAGE)
 				.ToList();
-            return View(history);	
+			return View(pagedProduct);	
 		}
 	}
 }

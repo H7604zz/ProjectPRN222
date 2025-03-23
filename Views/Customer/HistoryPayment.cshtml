@@ -17,7 +17,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading-@orderId">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@orderId" aria-expanded="false" aria-controls="collapse-@orderId">
-                        <strong>Đơn hàng #@orderId</strong> - Ngày: @firstOrder.OrderDate.ToString("dd/MM/yyyy") - Thành tiền: <span class="text-danger">@firstOrder.FinalTotal.ToString("N0") đ</span>
+                        <strong>Đơn hàng #@orderId</strong> - Ngày: @firstOrder.OrderDate.ToString("dd/MM/yyyy") -
+                        Thành tiền: <span class="text-danger">@firstOrder.FinalTotal.ToString("N0") VNĐ</span>
                     </button>
                 </h2>
                 <div id="collapse-@orderId" class="accordion-collapse collapse" aria-labelledby="heading-@orderId" data-bs-parent="#orderAccordion">
@@ -32,13 +33,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in order)
+                                @foreach (var item in firstOrder.ListProducts) // Lấy danh sách sản phẩm từ firstOrder
                                 {
                                     <tr>
-                                        <td><img src="@item.ProductImage" alt="Ảnh sản phẩm" style="width: 50px; height: 50px;"></td>
+                                        <td><img src="@item.Image" alt="Ảnh sản phẩm" style="width: 50px; height: 50px;"></td>
                                         <td>@item.ProductName</td>
-                                        <td>@item.Quantity</td>
-                                        <td>@item.CurrentPrice.ToString("N0") VNĐ</td>
+                                        <td>@item.Quanity</td>
+                                        <td>@item..ToString("N0") VNĐ</td>
                                     </tr>
                                 }
                             </tbody>
@@ -55,7 +56,26 @@
     else
     {
         <div style="height: 400px">
-            <p class="text-center text-muted">Bạn chưa có VNĐơn hàng nào.</p>
+            <p class="text-center text-muted">Bạn chưa có đơn hàng nào.</p>
         </div>
     }
+</div>
+
+
+
+@{
+    var paggingModel = new ProjectPrn222.Helpers.PaggingModel()
+            {
+                CurrentPage = ViewBag.CurrentPage,
+                CountPage = ViewBag.CountPage,
+                GenerateUrl = (int? page) => Url.Action("HistoryPayment", new
+                {
+                    keyword = @ViewBag.keyword,
+                    currentPage = page,
+                })
+            };
+}
+
+<div class="col-lg-12 d-flex justify-content-center mt-4">
+    <partial name="_Pagging" model="@paggingModel" />
 </div>

@@ -12,6 +12,6 @@
         public float DiscountAmount { get; set; }
         public float TotalAmount { get; set; }
         public float FinalTotal { get; set; }
-        public IEnumerable<Product>? ListProducts { get; set; }
+        public IEnumerable<ProductViewModel>? ListProducts { get; set; }
     }
 }

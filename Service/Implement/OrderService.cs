@@ -46,26 +46,30 @@ namespace ProjectPrn222.Service.Implement
                 .ToList();
         }
 
-		public IQueryable<OrderViewModel>? HistoryOrder(string userId)
-		{
-			return _context.Orders
-				.Where(o => o.UserId == userId)
+        public IQueryable<OrderViewModel>? HistoryOrder(string userId)
+        {
+            return _context.Orders
+                .Where(o => o.UserId == userId)
                 .Include(o => o.OrderDetails)
-                .ThenInclude(p => p.Product)
-                .SelectMany(o => o.OrderDetails.Select(od => new OrderViewModel
+                .ThenInclude(od => od.Product)
+                .Select(o => new OrderViewModel
                 {
                     OrderId = o.OrderId,
-                    ProductId = od.Product.ProductId,
-                    ProductName = od.Product.ProductName,
-                    ProductImage = od.Product.Image,
-					Quantity = od.Quantity,
-                    CurrentPrice = od.Price,
                     OrderDate = o.OrderDate,
                     DiscountAmount = o.DiscountAmount,
-					TotalAmount = o.TotalAmount,
+                    TotalAmount = o.TotalAmount,
                     FinalTotal = o.TotalAmount - o.DiscountAmount,
-                    ListProducts = o.OrderDetails.Select(od => od.Product).ToList()
-                }));
+                    ListProducts = o.OrderDetails.Select(od => new ProductViewModel
+                    {
+                        ProductId = od.Product.ProductId,
+                        ProductName = od.Product.ProductName,
+                        Image = od.Product.Image,
+                        Quanity = od.Quantity,
+                        Price =(decimal) od.Price // Lấy trực tiếp từ OrderDetails
+                    })
+                });
         }
-	}
+
+
+    }
 }
