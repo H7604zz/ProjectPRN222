@@ -78,6 +78,10 @@ namespace ProjectPrn222.Service.Implement
             return product;
         }
 
+        public Product? GetProductModelById(int id)
+        {
+            return _context.Products.AsNoTracking().FirstOrDefault(p => p.ProductId == id);
+        }
         public IQueryable<ProductViewModel>? SearchProduct(string keyword)
         {
             var product = _context.Products

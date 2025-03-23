@@ -11,6 +11,7 @@ namespace ProjectPrn222.Service.Iterface
         void EditProduct(Product product);
         IQueryable<ProductViewModel> GetAllProducts();
         ProductViewModel? GetProductById(int id);
+        Product? GetProductModelById(int id);
         IQueryable<ProductViewModel>? SearchProduct(string keyword);
         IQueryable<Category> GetAllCategories();
         bool HasProductName(string productName, int productId);

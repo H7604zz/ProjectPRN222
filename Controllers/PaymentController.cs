@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectPrn222.Models;
 using ProjectPrn222.Models.VNPay;
+using ProjectPrn222.Service.Implement;
 using ProjectPrn222.Service.Iterface;
 
 namespace ProjectPrn222.Controllers
@@ -12,11 +13,16 @@ namespace ProjectPrn222.Controllers
 		private readonly IVnPayService _vnPayService;
 		private readonly IOrderService _orderService;
 		private readonly ICartService _cartService;
-		public PaymentController(IVnPayService vnPayService, IOrderService orderService, ICartService cartService)
+		private readonly IProductService _productService;
+		public PaymentController(IVnPayService vnPayService, 
+								IOrderService orderService, 
+								ICartService cartService,
+								IProductService productService)
 		{
 			_vnPayService = vnPayService;
 			_orderService = orderService;
 			_cartService = cartService;
+			_productService = productService;
 		}
 		[HttpPost]
 		public IActionResult CreatePaymentUrlVnpay(PaymentInformationModel model)
@@ -48,7 +54,7 @@ namespace ProjectPrn222.Controllers
 			};
 			int orderId = _orderService.AddOrder(orderModel);
 
-			var cartItems = _cartService.GetCartsOfCustomer(userId);
+			var cartItems = _cartService.GetCartsOfCustomer(userId).ToList();
 			var orderDetails = cartItems.Select(item => new OrderDetail
 			{
 				OrderId = orderId,
@@ -57,8 +63,20 @@ namespace ProjectPrn222.Controllers
 			}).ToList();
 
 			_orderService.AddOrderDetails(orderDetails);
-			//xóa thông tin trong giỏ hàng
-			_cartService.ClearCart(userId);
+
+            // Trừ số lượng sản phẩm
+            foreach (var item in cartItems)
+            {
+                var product = _productService.GetProductModelById(item.ProductId);
+                if (product != null && product.Quanity >= item.QuantityInCart)
+                {
+                    product.Quanity -= item.QuantityInCart;
+                    _productService.EditProduct(product);
+                }
+            }
+
+            //xóa thông tin trong giỏ hàng
+            _cartService.ClearCart(userId);
             HttpContext.Session.Remove("VoucherCode");
             HttpContext.Session.Remove("DiscountAmount");
             return View("~/Views/Customer/PaymentCallbackVnpay.cshtml", response);
