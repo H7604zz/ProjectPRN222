@@ -36,7 +36,11 @@
                                 @foreach (var item in firstOrder.ListProducts) // Lấy danh sách sản phẩm từ firstOrder
                                 {
                                     <tr>
-                                        <td><img src="@item.Image" alt="Ảnh sản phẩm" style="width: 50px; height: 50px;"></td>
+                                        <td>
+                                            <a asp-controller="Home" asp-action="ProductDetails" asp-route-productid="@item.ProductId">
+                                                <img src="@item.Image" alt="Ảnh sản phẩm" style="width: 50px; height: 50px;">
+                                            </a>
+                                        </td>
                                         <td>@item.ProductName</td>
                                         <td>@item.Quanity</td>
                                         <td>@item..ToString("N0") VNĐ</td>

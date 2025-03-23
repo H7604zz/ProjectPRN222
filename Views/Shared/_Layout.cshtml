@@ -90,8 +90,11 @@
                         {
                             @if (User.IsInRole("Customer"))
                             {
-                                <li class="d-flex align-items-center nav-item">
+                                <li class="d-flex align-items-center nav-item me-3">
                                     <a class="shopping-cart" asp-controller="Customer" asp-action="Cart"><i class="fas fa-shopping-cart"></i></a>
+                                </li>
+                                <li class="d-flex align-items-center nav-item ">
+                                    <a class="shopping-cart" asp-controller="Customer" asp-action="HistoryPayment"><i class="fa fa-file-invoice-dollar"></i></a>
                                 </li>
                             }
 
