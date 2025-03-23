@@ -22,6 +22,7 @@ namespace ProjectPrn222.Controllers
         private readonly IProductService _productService;
         private readonly IVourcherService _vourcherService;
 		private readonly IVnPayService _vnPayService;
+		private readonly IOrderService _orderService;
 		private readonly UserManager<ApplicationUser> _userManager;
 
         public CustomerController(IUserService userService,
@@ -29,6 +30,7 @@ namespace ProjectPrn222.Controllers
                                   IProductService productService,
 								  IVourcherService vocherService,
 								  IVnPayService vnPayService,
+								  IOrderService orderService,
                                   UserManager<ApplicationUser> userManager)
         {
             _userService = userService;
@@ -36,6 +38,7 @@ namespace ProjectPrn222.Controllers
             _productService = productService;
 			_vourcherService = vocherService;
 			_vnPayService = vnPayService;
+			_orderService = orderService;
             _userManager = userManager;
         }
 
@@ -251,6 +254,16 @@ namespace ProjectPrn222.Controllers
 			var discountAmount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0; //số tiền giảm từ vourcher
 			HttpContext.Session.SetInt32("TotalAmount", (int)(subtotal - discountAmount));
 			return View();
+		}
+
+		public IActionResult HistoryPayment()
+		{
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+			var history = _orderService.HistoryOrder(userId)
+				.OrderByDescending(x => x.OrderId)
+				.ToList();
+            return View(history);	
 		}
 	}
 }

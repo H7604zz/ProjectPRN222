@@ -8,6 +8,6 @@ namespace ProjectPrn222.Service.Iterface
 		int AddOrder(Order order);
 		void AddOrderDetails(IEnumerable<OrderDetail> orderDetails);
 		public List<MonthlyRevenueModel> GetRevenueInMonth();
-
+		IQueryable<OrderViewModel>? HistoryOrder(string userId);
     }
 }

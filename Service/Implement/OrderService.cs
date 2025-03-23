@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using ProjectPrn222.Models;
 using ProjectPrn222.Models.DTO;
 using ProjectPrn222.Service.Iterface;
@@ -43,6 +44,28 @@ namespace ProjectPrn222.Service.Implement
 				.OrderBy(g => g.Year)
 				.ThenBy(g => g.Month)
                 .ToList();
+        }
+
+		public IQueryable<OrderViewModel>? HistoryOrder(string userId)
+		{
+			return _context.Orders
+				.Where(o => o.UserId == userId)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(p => p.Product)
+                .SelectMany(o => o.OrderDetails.Select(od => new OrderViewModel
+                {
+                    OrderId = o.OrderId,
+                    ProductId = od.Product.ProductId,
+                    ProductName = od.Product.ProductName,
+                    ProductImage = od.Product.Image,
+					Quantity = od.Quantity,
+                    CurrentPrice = od.Price,
+                    OrderDate = o.OrderDate,
+                    DiscountAmount = o.DiscountAmount,
+					TotalAmount = o.TotalAmount,
+                    FinalTotal = o.TotalAmount - o.DiscountAmount,
+                    ListProducts = o.OrderDetails.Select(od => od.Product).ToList()
+                }));
         }
 	}
 }
