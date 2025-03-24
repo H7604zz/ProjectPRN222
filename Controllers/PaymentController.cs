@@ -59,7 +59,8 @@ namespace ProjectPrn222.Controllers
 			{
 				OrderId = orderId,
 				ProductId = item.ProductId,
-				Quantity = item.QuantityInCart
+				Quantity = item.QuantityInCart,
+				Price = item.Price,
 			}).ToList();
 
 			_orderService.AddOrderDetails(orderDetails);
