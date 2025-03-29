@@ -37,6 +37,9 @@ namespace ProjectPrn222.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
+            if (string.IsNullOrEmpty(username))
+            { return View(); }
+        
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
